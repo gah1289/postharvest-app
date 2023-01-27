@@ -1,0 +1,64 @@
+{
+	"$schema": "https://json-schema.org/draft/2019-09/schema",
+	"$id": "http://example.com/example.json",
+	"type": "object",
+	"default": { "isAdmin": false },
+	"title": "Root Schema",
+	"required": [
+		"username",
+		"firstName",
+		"lastName",
+		"email"
+	],
+	"properties": {
+		"username": {
+			"type": "string",
+			"default": "",
+			"title": "The username Schema",
+			"examples": [
+				"casey"
+			]
+		},
+		"firstName": {
+			"type": "string",
+			"default": "",
+			"title": "The firstName Schema",
+			"examples": [
+				"Casey"
+			]
+		},
+		"lastName": {
+			"type": "string",
+			"default": "",
+			"title": "The lastName Schema",
+			"examples": [
+				"LaCourse"
+			]
+		},
+		"email": {
+			"type": "string",
+			"default": "",
+			"title": "The email Schema",
+			"examples": [
+				"casey@windhampkg.com"
+			]
+		},
+		"isAdmin": {
+			"type": "boolean",
+			"default": false,
+			"title": "The isAdmin Schema",
+			"examples": [
+				true
+			]
+		}
+	},
+	"examples": [
+		{
+			"username": "casey",
+			"firstName": "Casey",
+			"lastName": "LaCourse",
+			"email": "casey@windhampkg.com",
+			"isAdmin": true
+		}
+	]
+}

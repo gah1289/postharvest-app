@@ -1,0 +1,123 @@
+{
+	"$schema": "https://json-schema.org/draft/2019-09/schema",
+	"$id": "http://example.com/example.json",
+	"type": "object",
+	"default": {},
+	"title": "Root Schema",
+	"required": [
+		"users"
+	],
+	"properties": {
+		"users": {
+			"type": "array",
+			"default": [],
+			"title": "The users Schema",
+			"items": {
+				"type": "object",
+				"title": "A Schema",
+				"required": [
+					"username",
+					"firstName",
+					"lastName",
+					"email",
+					"isAdmin"
+				],
+				"properties": {
+					"username": {
+						"type": "string",
+						"title": "The username Schema",
+						"examples": [
+							"evm",
+							"gah1289"
+						]
+					},
+					"firstName": {
+						"type": "string",
+						"title": "The firstName Schema",
+						"examples": [
+							"Liz",
+							"Gabriela"
+						]
+					},
+					"lastName": {
+						"type": "string",
+						"title": "The lastName Schema",
+						"examples": [
+							"Marston",
+							"McCarthy"
+						]
+					},
+					"email": {
+						"type": "string",
+						"title": "The email Schema",
+						"examples": [
+							"evmarston@windhampkg.com",
+							"gah1289@gmail.com"
+						]
+					},
+					"isAdmin": {
+						"type": "boolean",
+						"title": "The isAdmin Schema",
+						"examples": [
+							true
+						]
+					}
+				},
+				"examples": [
+					{
+						"username": "evm",
+						"firstName": "Liz",
+						"lastName": "Marston",
+						"email": "evmarston@windhampkg.com",
+						"isAdmin": true
+					},
+					{
+						"username": "gah1289",
+						"firstName": "Gabriela",
+						"lastName": "McCarthy",
+						"email": "gah1289@gmail.com",
+						"isAdmin": true
+					}
+				]
+			},
+			"examples": [
+				[
+					{
+						"username": "evm",
+						"firstName": "Liz",
+						"lastName": "Marston",
+						"email": "evmarston@windhampkg.com",
+						"isAdmin": true
+					},
+					{
+						"username": "gah1289",
+						"firstName": "Gabriela",
+						"lastName": "McCarthy",
+						"email": "gah1289@gmail.com",
+						"isAdmin": true
+					}
+				]
+			]
+		}
+	},
+	"examples": [
+		{
+			"users": [
+				{
+					"username": "evm",
+					"firstName": "Liz",
+					"lastName": "Marston",
+					"email": "evmarston@windhampkg.com",
+					"isAdmin": true
+				},
+				{
+					"username": "gah1289",
+					"firstName": "Gabriela",
+					"lastName": "McCarthy",
+					"email": "gah1289@gmail.com",
+					"isAdmin": true
+				}
+			]
+		}
+	]
+}

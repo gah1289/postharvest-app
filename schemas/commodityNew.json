@@ -1,0 +1,62 @@
+{
+	"$schema": "https://json-schema.org/draft/2019-09/schema",
+	"$id": "http://example.com/example.json",
+	"type": "object",
+	"default": {},
+	"title": "Root Schema",
+	"required": [
+		"id",
+		"commodityName"
+	],
+	"properties": {
+		"commodityName": {
+			"type": "string",
+			"default": "",
+			"title": "The commodityName Schema",
+			"examples": [
+				"Apple"
+			]
+		},
+		"variety": {
+			"type": "string",
+			"default": "",
+			"title": "The variety Schema",
+			"examples": [
+				"Honeycrisp"
+			]
+		},
+		"scientificName": {
+			"type": "string",
+			"default": "",
+			"title": "The scientificName Schema",
+			"examples": [
+				"Malus domestica 'Honeycrisp'"
+			]
+		},
+		"coolingMethod": {
+			"type": "string",
+			"default": "",
+			"title": "The coolingMethod Schema",
+			"examples": [
+				"Room Cooling, Forced Air, Hydrocooling"
+			]
+		},
+		"climacteric": {
+			"type": "boolean",
+			"default": false,
+			"title": "The climacteric Schema",
+			"examples": [
+				true
+			]
+		}
+	},
+	"examples": [
+		{
+			"commodityName": "Apple",
+			"variety": "Honeycrisp",
+			"scientificName": "Malus domestica 'Honeycrisp'",
+			"coolingMethod": "Room Cooling, Forced Air, Hydrocooling",
+			"climacteric": true
+		}
+	]
+}
