@@ -4,12 +4,7 @@
 	"type": "object",
 	"default": { "isAdmin": false },
 	"title": "Root Schema",
-	"required": [
-		"username",
-		"firstName",
-		"lastName",
-		"email"
-	],
+	"required": [],
 	"properties": {
 		"username": {
 			"type": "string",

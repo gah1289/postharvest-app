@@ -50,6 +50,7 @@
 					"email": {
 						"type": "string",
 						"title": "The email Schema",
+						"format": "email",
 						"examples": [
 							"evmarston@windhampkg.com",
 							"gah1289@gmail.com"

@@ -10,7 +10,9 @@ const { BadRequestError } = require('../expressError');
 const User = require('../models/user');
 const { createToken } = require('../helpers/tokens');
 const userNewSchema = require('../schemas/userNew.json');
-// const userUpdateSchema = require('../schemas/userUpdate.json');
+const { authenticateJWT } = require('../middleware/auth');
+const userUpdateSchema = require('../schemas/userUpdate.json');
+const userAuthSchema = require('../schemas/userAuth.json');
 
 const router = express.Router();
 
@@ -21,7 +23,7 @@ const router = express.Router();
  * This returns the newly created user and an authentication token for them:
  *  {user: { username, firstName, lastName, email, isAdmin }, token }
  *
- * Authorization required: admin
+ * Authorization required: none
  **/
 
 router.post('/', async function(req, res, next) {
@@ -58,9 +60,8 @@ router.get('/', ensureAdmin, async function(req, res, next) {
 
 /** GET /[username] => { user }
  *
- * Returns { username, firstName, lastName, isAdmin, jobs }
- *   where jobs is { id, title, companyHandle, companyName, state }
- *
+ * Returns { username, firstName, lastName, isAdmin, jobTitle }
+ 
  * Authorization required: admin or same user-as-:username
  **/
 

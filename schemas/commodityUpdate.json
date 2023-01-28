@@ -4,9 +4,7 @@
 	"type": "object",
 	"default": {},
 	"title": "Root Schema",
-	"required": [
-		"commodityName"
-	],
+	"required": [],
 	"properties": {
 		"commodityName": {
 			"type": "string",

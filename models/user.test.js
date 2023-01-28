@@ -3,7 +3,7 @@
 const { NotFoundError, BadRequestError, UnauthorizedError } = require('../expressError');
 const db = require('../db.js');
 const User = require('./user.js');
-const { commonBeforeAll, commonBeforeEach, commonAfterEach, commonAfterAll } = require('./_testCommon');
+const { commonBeforeAll, commonBeforeEach, commonAfterEach, commonAfterAll } = require('./_testModelsCommon');
 
 beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
@@ -19,7 +19,7 @@ describe('authenticate', function() {
 			username  : 'u1',
 			firstName : 'U1F',
 			lastName  : 'U1L',
-			email     : 'u1@email.com',
+			email     : 'user1@user.com',
 			jobTitle  : 'test',
 			isAdmin   : false
 		});
@@ -98,7 +98,7 @@ describe('register', function() {
 	});
 });
 
-/************************************** findAll */
+// /************************************** findAll */
 
 describe('findAll', function() {
 	test('works', async function() {
@@ -109,7 +109,7 @@ describe('findAll', function() {
 				firstName : 'U1F',
 				lastName  : 'U1L',
 				jobTitle  : 'test',
-				email     : 'u1@email.com',
+				email     : 'user1@user.com',
 				isAdmin   : false
 			},
 			{
@@ -117,28 +117,33 @@ describe('findAll', function() {
 				firstName : 'U2F',
 				lastName  : 'U2L',
 				jobTitle  : 'test',
-				email     : 'u2@email.com',
+				email     : 'user2@user.com',
+				isAdmin   : false
+			},
+			{
+				username  : 'u3',
+				firstName : 'U3F',
+				lastName  : 'U3L',
+				jobTitle  : 'test',
+				email     : 'user3@user.com',
 				isAdmin   : false
 			}
 		]);
 	});
 });
 
-/************************************** get */
+// /************************************** get */
 
 describe('get', function() {
 	test('works', async function() {
 		let user = await User.get('u1');
 		expect(user).toEqual({
-			username     : 'u1',
-			firstName    : 'U1F',
-			lastName     : 'U1L',
-			email        : 'u1@email.com',
-			jobTitle     : 'test',
-			isAdmin      : false,
-			applications : [
-				testJobIds[0]
-			]
+			username  : 'u1',
+			firstName : 'U1F',
+			lastName  : 'U1L',
+			jobTitle  : 'test',
+			email     : 'user1@user.com',
+			isAdmin   : false
 		});
 	});
 
@@ -152,7 +157,7 @@ describe('get', function() {
 	});
 });
 
-/************************************** update */
+// /************************************** update */
 
 describe('update', function() {
 	const updateData = {
@@ -179,8 +184,8 @@ describe('update', function() {
 			username  : 'u1',
 			firstName : 'U1F',
 			lastName  : 'U1L',
-			jobTitle  : 'test2',
-			email     : 'u1@email.com',
+			jobTitle  : 'test',
+			email     : 'user1@user.com',
 			isAdmin   : false
 		});
 		const found = await db.query("SELECT * FROM users WHERE username = 'u1'");
@@ -210,7 +215,7 @@ describe('update', function() {
 	});
 });
 
-/************************************** remove */
+// /************************************** remove */
 
 describe('remove', function() {
 	test('works', async function() {
@@ -222,42 +227,6 @@ describe('remove', function() {
 	test('not found if no such user', async function() {
 		try {
 			await User.remove('nope');
-			fail();
-		} catch (err) {
-			expect(err instanceof NotFoundError).toBeTruthy();
-		}
-	});
-});
-
-/************************************** applyToJob */
-
-describe('applyToJob', function() {
-	test('works', async function() {
-		await User.applyToJob('u1', testJobIds[1]);
-
-		const res = await db.query('SELECT * FROM applications WHERE job_id=$1', [
-			testJobIds[1]
-		]);
-		expect(res.rows).toEqual([
-			{
-				job_id   : testJobIds[1],
-				username : 'u1'
-			}
-		]);
-	});
-
-	test('not found if no such job', async function() {
-		try {
-			await User.applyToJob('u1', 0, 'applied');
-			fail();
-		} catch (err) {
-			expect(err instanceof NotFoundError).toBeTruthy();
-		}
-	});
-
-	test('not found if no such user', async function() {
-		try {
-			await User.applyToJob('nope', testJobIds[0], 'applied');
 			fail();
 		} catch (err) {
 			expect(err instanceof NotFoundError).toBeTruthy();

@@ -55,7 +55,7 @@ class User {
    * Throws BadRequestError on duplicates.
    **/
 
-	static async register({ username, password, firstName, lastName, email, isAdmin }) {
+	static async register({ username, password, firstName, lastName, jobTitle, email, isAdmin }) {
 		const duplicateCheck = await db.query(
 			`SELECT username
            FROM users
@@ -80,7 +80,7 @@ class User {
             email,
             job_title,
             is_admin)
-           VALUES ($1, $2, $3, $4, $5, $6)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)
            RETURNING username, first_name AS "firstName", last_name AS "lastName", email, job_title AS "jobTitle", is_admin AS "isAdmin"`,
 			[
 				username,
@@ -109,6 +109,7 @@ class User {
                   first_name AS "firstName",
                   last_name AS "lastName",
                   email,
+				  job_title AS "jobTitle",
                   is_admin AS "isAdmin"
            FROM users
            ORDER BY username`
@@ -131,6 +132,7 @@ class User {
                   first_name AS "firstName",
                   last_name AS "lastName",
                   email,
+				  job_title AS "jobTitle",
                   is_admin AS "isAdmin"
            FROM users
            WHERE username = $1`,
@@ -142,17 +144,6 @@ class User {
 		const user = userRes.rows[0];
 
 		if (!user) throw new NotFoundError(`No user: ${username}`);
-
-		// const userApplicationsRes = await db.query(
-		// 	`SELECT a.job_id
-		//        FROM applications AS a
-		//        WHERE a.username = $1`,
-		// 	[
-		// 		username
-		// 	]
-		// );
-
-		// user.applications = userApplicationsRes.rows.map((a) => a.job_id);
 		return user;
 	}
 
@@ -162,9 +153,9 @@ class User {
    * all the fields; this only changes provided ones.
    *
    * Data can include:
-   *   { firstName, lastName, password, email, isAdmin }
+   *   { firstName, lastName, password, email, isAdmin, jobTitle }
    *
-   * Returns { username, firstName, lastName, email, isAdmin }
+   * Returns { username, firstName, lastName, email, jobTitle, isAdmin }
    *
    * Throws NotFoundError if not found.
    *
@@ -181,7 +172,7 @@ class User {
 		const { setCols, values } = sqlForPartialUpdate(data, {
 			firstName : 'first_name',
 			lastName  : 'last_name',
-			jobTitle  : 'jobTitle',
+			jobTitle  : 'job_title',
 			isAdmin   : 'is_admin'
 		});
 		const usernameVarIdx = '$' + (values.length + 1);
@@ -193,6 +184,7 @@ class User {
                                 first_name AS "firstName",
                                 last_name AS "lastName",
                                 email,
+								job_title AS "jobTitle",
                                 is_admin AS "isAdmin"`;
 		const result = await db.query(querySql, [
 			...values,
@@ -221,47 +213,6 @@ class User {
 		const user = result.rows[0];
 
 		if (!user) throw new NotFoundError(`No user: ${username}`);
-	}
-
-	/** Apply for job: update db, returns undefined.
-   *
-   * - username: username applying for job
-   * - jobId: job id
-   **/
-
-	static async applyToJob(username, jobId) {
-		const preCheck = await db.query(
-			`SELECT id
-           FROM jobs
-           WHERE id = $1`,
-			[
-				jobId
-			]
-		);
-		const job = preCheck.rows[0];
-
-		if (!job) throw new NotFoundError(`No job: ${jobId}`);
-
-		const preCheck2 = await db.query(
-			`SELECT username
-           FROM users
-           WHERE username = $1`,
-			[
-				username
-			]
-		);
-		const user = preCheck2.rows[0];
-
-		if (!user) throw new NotFoundError(`No username: ${username}`);
-
-		await db.query(
-			`INSERT INTO applications (job_id, username)
-           VALUES ($1, $2)`,
-			[
-				jobId,
-				username
-			]
-		);
 	}
 }
 

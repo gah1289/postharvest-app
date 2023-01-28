@@ -3,25 +3,28 @@
 /** Routes for authentication. */
 
 const jsonschema = require('jsonschema');
-
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const express = require('express');
 const router = new express.Router();
 const { createToken } = require('../helpers/tokens');
-// const userAuthSchema = require('../schemas/userAuth.json');
-// const userRegisterSchema = require('../schemas/userRegister.json');
+const userAuthSchema = require('../schemas/userAuth.json');
+const { SECRET_KEY } = require('../config');
+const userNewSchema = require('../schemas/userNew.json');
 const { BadRequestError } = require('../expressError');
+const { authenticateJWT } = require('../middleware/auth');
 
 /** POST /auth/token:  { username, password } => { token }
- *
- * Returns JWT token which can be used to authenticate further requests.
+ *Occurs when user tries to log in
+ * 
+ * If successful, returns JWT token which can be used to authenticate further requests.
  *
  * Authorization required: none
  */
 
 router.post('/token', async function(req, res, next) {
 	try {
-		// const validator = jsonschema.validate(req.body, userAuthSchema);
+		const validator = jsonschema.validate(req.body, userAuthSchema);
 		if (!validator.valid) {
 			const errs = validator.errors.map((e) => e.stack);
 			throw new BadRequestError(errs);
@@ -37,6 +40,32 @@ router.post('/token', async function(req, res, next) {
 	}
 });
 
+/** GET /auth/login:  { username, password } => { token }
+ *Occurs when user tries to log in
+ * 
+ * If successful, returns Jsuccessful log in message with user data.
+ *
+ * Authorization required: none
+ */
+router.get('/login', (req, res) => {
+	//verify the JWT token generated for the user
+	jwt.verify(req.body.token, SECRET_KEY, (err, authorizedData) => {
+		if (err) {
+			//If error send Forbidden (403)
+			console.log('ERROR: Could not connect to the protected route');
+			res.sendStatus(401);
+		}
+		else {
+			//If token is successfully verified, we can send the autorized data
+			res.json({
+				message        : 'Successful log in',
+				authorizedData
+			});
+			console.log('SUCCESS: Connected to protected route');
+		}
+	});
+});
+
 /** POST /auth/register:   { user } => { token }
  *
  * user must include { username, password, firstName, lastName, email }
@@ -48,7 +77,7 @@ router.post('/token', async function(req, res, next) {
 
 router.post('/register', async function(req, res, next) {
 	try {
-		// const validator = jsonschema.validate(req.body, userRegisterSchema);
+		const validator = jsonschema.validate(req.body, userNewSchema);
 		if (!validator.valid) {
 			const errs = validator.errors.map((e) => e.stack);
 			throw new BadRequestError(errs);

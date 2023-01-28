@@ -15,11 +15,11 @@ const { UnauthorizedError } = require('../expressError');
  */
 
 function authenticateJWT(req, res, next) {
-	console.log('AUTHENTICATE JWT');
 	try {
 		const authHeader = req.headers && req.headers.authorization;
-		console.log(authHeader);
+
 		if (authHeader) {
+			// Authorization header requires Bearer as the type, with the JWT token being the credentials.
 			const token = authHeader.replace(/^[Bb]earer /, '').trim();
 			res.locals.user = jwt.verify(token, SECRET_KEY);
 		}
@@ -66,7 +66,6 @@ function ensureAdmin(req, res, next) {
  */
 
 function ensureCorrectUserOrAdmin(req, res, next) {
-	console.log('USER', res.locals.user);
 	try {
 		const user = res.locals.user;
 

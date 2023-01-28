@@ -6,10 +6,11 @@ const jsonschema = require('jsonschema');
 
 const express = require('express');
 const { ensureAdmin } = require('../middleware/auth');
-const { BadRequestError } = require('../expressError');
+const { BadRequestError, NotFoundError } = require('../expressError');
 const Commodity = require('../models/commodity');
 
 const commodityNewSchema = require('../schemas/commodityNew.json');
+const commodityUpdateSchema = require('../schemas/commodityUpdate.json');
 
 const router = express.Router();
 
@@ -26,6 +27,7 @@ const router = express.Router();
 router.post('/', ensureAdmin, async function(req, res, next) {
 	try {
 		const validator = jsonschema.validate(req.body, commodityNewSchema);
+
 		if (!validator.valid) {
 			const errs = validator.errors.map((e) => e.stack);
 			throw new BadRequestError(errs);
@@ -65,8 +67,46 @@ router.get('/', async function(req, res, next) {
 
 router.get('/:id', async function(req, res, next) {
 	try {
-		const user = await Commodity.get(req.params.id);
-		return res.json({ user });
+		const commodity = await Commodity.get(req.params.id);
+		return res.json({ commodity });
+	} catch (err) {
+		return next(err);
+	}
+});
+
+/** PATCH /[id] { commodity } => { commodity }
+ *
+ * Data can include:
+ *   { commodityName, variety, scientificName, coolingMethod, climacteric }
+ *
+ * Returns { id, commodityName, variety, scientificName, coolingMethod, climacteric }
+ *
+ * Authorization required: admin 
+ **/
+
+router.patch('/:id', ensureAdmin, async function(req, res, next) {
+	try {
+		const validator = jsonschema.validate(req.body, commodityUpdateSchema);
+		if (!validator.valid) {
+			const errs = validator.errors.map((e) => e.stack);
+			throw new BadRequestError(errs);
+		}
+		const commodity = await Commodity.update(req.params.id, req.body);
+		return res.json({ commodity });
+	} catch (err) {
+		next(err);
+	}
+});
+
+/** DELETE /[id]  =>  { deleted: id }
+ *
+ * Authorization required: admin 
+ **/
+
+router.delete('/:id', ensureAdmin, async function(req, res, next) {
+	try {
+		await Commodity.remove(req.params.id);
+		return res.json({ deleted: req.params.id });
 	} catch (err) {
 		return next(err);
 	}
