@@ -1,4 +1,5 @@
-
+DROP TABLE IF EXISTS "public"."commodities";
+-- This script only contains the table creation statements and does not fully represent the table in the database. It's still missing: indices, triggers. Do not use it as a backup.
 
 -- Table Definition
 CREATE TABLE "public"."commodities" (
@@ -11,6 +12,11 @@ CREATE TABLE "public"."commodities" (
     PRIMARY KEY ("id")
 );
 
+DROP TABLE IF EXISTS "public"."ethylene_sensitivity";
+-- This script only contains the table creation statements and does not fully represent the table in the database. It's still missing: indices, triggers. Do not use it as a backup.
+
+-- Sequence and defined type
+CREATE SEQUENCE IF NOT EXISTS ethylene_sensitivity_id_seq;
 
 -- Table Definition
 CREATE TABLE "public"."ethylene_sensitivity" (
@@ -18,56 +24,61 @@ CREATE TABLE "public"."ethylene_sensitivity" (
     "temperature" varchar,
     "c2h4_production" varchar,
     "c2h4_class" varchar,
+    "id" int4 NOT NULL DEFAULT nextval('ethylene_sensitivity_id_seq'::regclass),
     CONSTRAINT "ethylene_sensitivity_commodity_id_fkey" FOREIGN KEY ("commodity_id") REFERENCES "public"."commodities"("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+DROP TABLE IF EXISTS "public"."references";
 
-
--- Table Definition
 CREATE TABLE "public"."references" (
     "commodity_id" varchar NOT NULL,
     "source" text NOT NULL,
     CONSTRAINT "references_commodity_id_fkey" FOREIGN KEY ("commodity_id") REFERENCES "public"."commodities"("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+DROP TABLE IF EXISTS "public"."respiration_rates";
 
+CREATE SEQUENCE IF NOT EXISTS respiration_rates_id_seq;
 
--- Table Definition
 CREATE TABLE "public"."respiration_rates" (
     "commodity_id" text,
     "temperature_celsius" numeric,
     "rr_mg_kg_hr" text,
     "rr_class" text,
+    "id" int4 NOT NULL DEFAULT nextval('respiration_rates_id_seq'::regclass),
     CONSTRAINT "respiration_rates_commodity_id_fkey" FOREIGN KEY ("commodity_id") REFERENCES "public"."commodities"("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+DROP TABLE IF EXISTS "public"."shelf_life";
 
+CREATE SEQUENCE IF NOT EXISTS shelf_life_id_seq;
 
--- Table Definition
 CREATE TABLE "public"."shelf_life" (
     "commodity_id" text,
     "temperature_celsius" numeric,
     "shelf_life" text,
     "packaging" text,
     "description" text,
+    "id" int4 NOT NULL DEFAULT nextval('shelf_life_id_seq'::regclass),
     CONSTRAINT "shelf_life_commodity_id_fkey" FOREIGN KEY ("commodity_id") REFERENCES "public"."commodities"("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+DROP TABLE IF EXISTS "public"."temperature_recommendations";
 
+CREATE SEQUENCE IF NOT EXISTS temperature_recommendations_id_seq;
 
--- Table Definition
 CREATE TABLE "public"."temperature_recommendations" (
     "commodity_id" text NOT NULL,
     "min_temp_celsius" text,
     "optimum_temp_celsius" text,
     "description" text,
     "rh" text,
+    "id" int4 NOT NULL DEFAULT nextval('temperature_recommendations_id_seq'::regclass),
     CONSTRAINT "temperature_recommendations_commodity_id_fkey" FOREIGN KEY ("commodity_id") REFERENCES "public"."commodities"("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+DROP TABLE IF EXISTS "public"."users";
 
-
--- Table Definition
 CREATE TABLE "public"."users" (
     "username" varchar(25) NOT NULL,
     "password" text NOT NULL,
@@ -79,12 +90,10 @@ CREATE TABLE "public"."users" (
     PRIMARY KEY ("username")
 );
 
+DROP TABLE IF EXISTS "public"."windham_studies";
 
-
--- Sequence and defined type
 CREATE SEQUENCE IF NOT EXISTS windham_studies_id_seq;
 
--- Table Definition
 CREATE TABLE "public"."windham_studies" (
     "title" text NOT NULL,
     "date" text,
@@ -94,9 +103,8 @@ CREATE TABLE "public"."windham_studies" (
     PRIMARY KEY ("id")
 );
 
+DROP TABLE IF EXISTS "public"."windham_studies_commodities";
 
-
--- Table Definition
 CREATE TABLE "public"."windham_studies_commodities" (
     "study_id" int4,
     "commodity_id" text,
@@ -117,18 +125,19 @@ INSERT INTO "public"."commodities" ("id", "commodity_name", "variety", "scientif
 ('APP-MUT', 'Apple', 'Mutsu', 'Malus domestica ''Mutsu''', 'Room Cooling, Forced Air, Hydrocooling', 't'),
 ('APP-FAL', 'Apple', 'Fall', 'Malus domestica', 'Room Cooling, Forced Air, Hydrocooling', 't'),
 ('APP-SPR', 'Apple', 'Spring', 'Malus domestica', 'Room Cooling, Forced Air, Hydrocooling', 't'),
-('DRAGON', 'Dragonfruit', NULL, 'Selenicereus undatus', NULL, NULL);
+('DRAGON', 'Dragonfruit', NULL, 'Selenicereus undatus', NULL, NULL),
+('BRO-CAL', 'Broccoli', 'Calabrese', 'Brassica oleracea', 'Packaged Ice', 't');
 
-INSERT INTO "public"."ethylene_sensitivity" ("commodity_id", "temperature", "c2h4_production", "c2h4_class") VALUES
-('ASP-GRN', '20', '<10', 'Ethylene Sensitive');
-INSERT INTO "public"."ethylene_sensitivity" ("commodity_id", "temperature", "c2h4_production", "c2h4_class") VALUES
-('LET-ROM', '20', '<10', 'Ethylene Sensitive');
-INSERT INTO "public"."ethylene_sensitivity" ("commodity_id", "temperature", "c2h4_production", "c2h4_class") VALUES
-('LET-GRE', '20', '<10', 'Ethylene Sensitive');
-INSERT INTO "public"."ethylene_sensitivity" ("commodity_id", "temperature", "c2h4_production", "c2h4_class") VALUES
-('AVO-HAS', '20', '>100', 'Ethylene Sensitive'),
-('LET-BIB', '20', '<10', 'Ethylene Sensitive'),
-('APP-HON', '20', '13-20', 'Ethylene Producer');
+INSERT INTO "public"."ethylene_sensitivity" ("commodity_id", "temperature", "c2h4_production", "c2h4_class", "id") VALUES
+('ASP-GRN', '20', '<10', 'Ethylene Sensitive', 1);
+INSERT INTO "public"."ethylene_sensitivity" ("commodity_id", "temperature", "c2h4_production", "c2h4_class", "id") VALUES
+('LET-ROM', '20', '<10', 'Ethylene Sensitive', 2);
+INSERT INTO "public"."ethylene_sensitivity" ("commodity_id", "temperature", "c2h4_production", "c2h4_class", "id") VALUES
+('LET-GRE', '20', '<10', 'Ethylene Sensitive', 3);
+INSERT INTO "public"."ethylene_sensitivity" ("commodity_id", "temperature", "c2h4_production", "c2h4_class", "id") VALUES
+('AVO-HAS', '20', '>100', 'Ethylene Sensitive', 4),
+('LET-BIB', '20', '<10', 'Ethylene Sensitive', 5),
+('APP-HON', '20', '13-20', 'Ethylene Producer', 6);
 
 INSERT INTO "public"."references" ("commodity_id", "source") VALUES
 ('ASP-GRN', 'https://postharvest.ucdavis.edu/Commodity_Resources/Fact_Sheets/Datastores/Vegetables_English/?uid=2&ds=799');
@@ -137,50 +146,50 @@ INSERT INTO "public"."references" ("commodity_id", "source") VALUES
 INSERT INTO "public"."references" ("commodity_id", "source") VALUES
 ('AVO-HAS', 'https://postharvest.ucdavis.edu/Commodity_Resources/Fact_Sheets/Datastores/Fruit_English/?uid=8&ds=798');
 
-INSERT INTO "public"."respiration_rates" ("commodity_id", "temperature_celsius", "rr_mg_kg_hr", "rr_class") VALUES
-('ASP-GRN', 0, '14-40', 'extremely high');
-INSERT INTO "public"."respiration_rates" ("commodity_id", "temperature_celsius", "rr_mg_kg_hr", "rr_class") VALUES
-('ASP-GRN', 5, '28-68', 'extremely high');
-INSERT INTO "public"."respiration_rates" ("commodity_id", "temperature_celsius", "rr_mg_kg_hr", "rr_class") VALUES
-('ASP-GRN', 10, '45-152', 'extremely high');
-INSERT INTO "public"."respiration_rates" ("commodity_id", "temperature_celsius", "rr_mg_kg_hr", "rr_class") VALUES
-('ASP-GRN', 15, '80-168', 'extremely high'),
-('ASP-GRN', 20, '138-250', 'extremely high'),
-('ASP-GRN', 25, '350-300', 'extremely high'),
-('LET-ROM', 5, '9-12', 'mod'),
-('LET-ROM', 10, '15-20', 'mod'),
-('LET-ROM', 15, '19-25', 'mod'),
-('LET-ROM', 20, '30-38', 'mod'),
-('AVO-HAS', 5, '10-25', 'high'),
-('AVO-HAS', 10, '25-80', 'high'),
-('AVO-HAS', 20, '40-150', 'high'),
-('APP-FAL', 0, '3', 'low'),
-('APP-FAL', 5, '6', 'low'),
-('APP-FAL', 10, '9', 'low'),
-('APP-FAL', 15, '15', 'low'),
-('APP-FAL', 10, '10', 'low');
+INSERT INTO "public"."respiration_rates" ("commodity_id", "temperature_celsius", "rr_mg_kg_hr", "rr_class", "id") VALUES
+('ASP-GRN', 0, '14-40', 'extremely high', 1);
+INSERT INTO "public"."respiration_rates" ("commodity_id", "temperature_celsius", "rr_mg_kg_hr", "rr_class", "id") VALUES
+('ASP-GRN', 5, '28-68', 'extremely high', 2);
+INSERT INTO "public"."respiration_rates" ("commodity_id", "temperature_celsius", "rr_mg_kg_hr", "rr_class", "id") VALUES
+('ASP-GRN', 10, '45-152', 'extremely high', 3);
+INSERT INTO "public"."respiration_rates" ("commodity_id", "temperature_celsius", "rr_mg_kg_hr", "rr_class", "id") VALUES
+('ASP-GRN', 15, '80-168', 'extremely high', 4),
+('ASP-GRN', 20, '138-250', 'extremely high', 5),
+('ASP-GRN', 25, '350-300', 'extremely high', 6),
+('LET-ROM', 5, '9-12', 'mod', 7),
+('LET-ROM', 10, '15-20', 'mod', 8),
+('LET-ROM', 15, '19-25', 'mod', 9),
+('LET-ROM', 20, '30-38', 'mod', 10),
+('AVO-HAS', 5, '10-25', 'high', 11),
+('AVO-HAS', 10, '25-80', 'high', 12),
+('AVO-HAS', 20, '40-150', 'high', 13),
+('APP-FAL', 0, '3', 'low', 14),
+('APP-FAL', 5, '6', 'low', 15),
+('APP-FAL', 10, '9', 'low', 16),
+('APP-FAL', 15, '15', 'low', 17),
+('APP-FAL', 10, '10', 'low', 18);
 
-INSERT INTO "public"."shelf_life" ("commodity_id", "temperature_celsius", "shelf_life", "packaging", "description") VALUES
-('ASP-GRN', 2, '12-21 days', 'air', NULL);
-INSERT INTO "public"."shelf_life" ("commodity_id", "temperature_celsius", "shelf_life", "packaging", "description") VALUES
-('LET-ROM', 5, '14 days', 'air', NULL);
-INSERT INTO "public"."shelf_life" ("commodity_id", "temperature_celsius", "shelf_life", "packaging", "description") VALUES
-('LET-ROM', 4, '20+ days', 'tray and lidding film - 36P at 40-45units', NULL);
-INSERT INTO "public"."shelf_life" ("commodity_id", "temperature_celsius", "shelf_life", "packaging", "description") VALUES
-('LET-BIB', 4, '20+ days', 'tray and lidding film - 36P at 40-45units', NULL),
-('APP-MUT', 0, '3-4 months', 'air', NULL),
-('AVO-HAS', 3, '2-4 weeks', 'air', 'Ripe'),
-('AVO-HAS', 10, '3-4 weeks', 'air', 'Mature Green');
+INSERT INTO "public"."shelf_life" ("commodity_id", "temperature_celsius", "shelf_life", "packaging", "description", "id") VALUES
+('ASP-GRN', 2, '12-21 days', 'air', NULL, 1);
+INSERT INTO "public"."shelf_life" ("commodity_id", "temperature_celsius", "shelf_life", "packaging", "description", "id") VALUES
+('LET-ROM', 5, '14 days', 'air', NULL, 2);
+INSERT INTO "public"."shelf_life" ("commodity_id", "temperature_celsius", "shelf_life", "packaging", "description", "id") VALUES
+('LET-ROM', 4, '20+ days', 'tray and lidding film - 36P at 40-45units', NULL, 3);
+INSERT INTO "public"."shelf_life" ("commodity_id", "temperature_celsius", "shelf_life", "packaging", "description", "id") VALUES
+('LET-BIB', 4, '20+ days', 'tray and lidding film - 36P at 40-45units', NULL, 4),
+('APP-MUT', 0, '3-4 months', 'air', NULL, 5),
+('AVO-HAS', 3, '2-4 weeks', 'air', 'Ripe', 6),
+('AVO-HAS', 10, '3-4 weeks', 'air', 'Mature Green', 7);
 
-INSERT INTO "public"."temperature_recommendations" ("commodity_id", "min_temp_celsius", "optimum_temp_celsius", "description", "rh") VALUES
-('ASP-GRN', '0', '2', NULL, '95-100%');
-INSERT INTO "public"."temperature_recommendations" ("commodity_id", "min_temp_celsius", "optimum_temp_celsius", "description", "rh") VALUES
-('LET-ROM', '0', '0', 'NULL', '>95%');
-INSERT INTO "public"."temperature_recommendations" ("commodity_id", "min_temp_celsius", "optimum_temp_celsius", "description", "rh") VALUES
-('AVO-HAS', '2', '4', 'Ripe', '90-95%');
-INSERT INTO "public"."temperature_recommendations" ("commodity_id", "min_temp_celsius", "optimum_temp_celsius", "description", "rh") VALUES
-('AVO-HAS', '5', '13', 'Mature Green', '90-95%'),
-('APP-HON', '0', '3', NULL, '90-95%');
+INSERT INTO "public"."temperature_recommendations" ("commodity_id", "min_temp_celsius", "optimum_temp_celsius", "description", "rh", "id") VALUES
+('ASP-GRN', '0', '2', NULL, '95-100%', 1);
+INSERT INTO "public"."temperature_recommendations" ("commodity_id", "min_temp_celsius", "optimum_temp_celsius", "description", "rh", "id") VALUES
+('LET-ROM', '0', '0', 'NULL', '>95%', 2);
+INSERT INTO "public"."temperature_recommendations" ("commodity_id", "min_temp_celsius", "optimum_temp_celsius", "description", "rh", "id") VALUES
+('AVO-HAS', '2', '4', 'Ripe', '90-95%', 3);
+INSERT INTO "public"."temperature_recommendations" ("commodity_id", "min_temp_celsius", "optimum_temp_celsius", "description", "rh", "id") VALUES
+('AVO-HAS', '5', '13', 'Mature Green', '90-95%', 4),
+('APP-HON', '0', '3', NULL, '90-95%', 5);
 
 INSERT INTO "public"."users" ("username", "password", "first_name", "last_name", "email", "job_title", "is_admin") VALUES
 ('gah1289', '$2b$12$AZH7virni5jlTTiGgEg4zu3lSvAw68qVEfSIOjJ3RqtbJbdW/Oi5q', 'Gabriela', 'McCarthy', 'gah1289@gmail.com', 'Postharvest Specialist', 't');

@@ -1,0 +1,61 @@
+{
+	"$schema": "https://json-schema.org/draft/2019-09/schema",
+	"$id": "http://example.com/example.json",
+	"type": "object",
+	"default": {},
+	"title": "Root Schema",
+	"required": [
+		"commodityId"
+	],
+	"properties": {
+		"id": {
+			"type": "integer",
+			"default": 0,
+			"title": "The id Schema",
+			"examples": [
+				38
+			]
+		},
+		"commodityId": {
+			"type": "string",
+			"default": "",
+			"title": "The commodityId Schema",
+			"examples": [
+				"id"
+			]
+		},
+		"temperature": {
+			"type": "string",
+			"default": "",
+			"title": "The temperature Schema",
+			"examples": [
+				"10"
+			]
+		},
+		"rrRate": {
+			"type": "string",
+			"default": "",
+			"title": "The rrRate Schema",
+			"examples": [
+				"20-40"
+			]
+		},
+		"rrClass": {
+			"type": "string",
+			"default": "",
+			"title": "The rrClass Schema",
+			"examples": [
+				"high"
+			]
+		}
+	},
+	"examples": [
+		{
+			"id": 38,
+			"commodityId": "id",
+			"temperature": "10",
+			"rrRate": "20-40",
+			"rrClass": "high"
+		}
+	]
+}

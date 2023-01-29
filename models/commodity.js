@@ -4,6 +4,10 @@ const db = require('../db');
 const { NotFoundError } = require('../expressError');
 const { sqlForPartialUpdate } = require('../helpers/sql');
 const { getCommodityId } = require('../helpers/commodityId');
+const Ethylene = require('./ethylene');
+const Respiration = require('./respiration');
+const ShelfLife = require('./shelfLife');
+const Temperature = require('./temperature');
 
 class Commodity {
 	// Create a commodity (from data), update db, return new commodity data.
@@ -33,7 +37,7 @@ class Commodity {
 				data.climacteric
 			]
 		);
-		let commodity = result.rows[0];
+		const commodity = result.rows[0];
 
 		return commodity;
 	}
@@ -79,38 +83,20 @@ class Commodity {
 
 		const commodity = commodityRes.rows[0];
 
-		// 		if (!commodity) throw new NotFoundError(`No commodity: ${commodityRes}`);
+		if (!commodity) throw new NotFoundError(`No commodity: ${commodityRes}`);
 
-		// 		const ethyleneRes = await db.query(
-		// 			`SELECT temperature, c2h4_production, c2h4_class FROM ethylene_sensitivity WHERE commodity_id = $1`,
-		// 			[
-		// 				id
-		// 			]
-		// 		);
+		// return empty array if data does not exist
+		const ethyleneData = (await Ethylene.getByCommodity(commodity.id)) || [];
+		commodity.ethyleneSensitivity = ethyleneData;
 
-		// 		commodity.ethyleneSensitivity = ethyleneRes.rows[0];
+		const respirationData = (await Respiration.getByCommodity(commodity.id)) || [];
+		commodity.respirationRate = respirationData;
 
-		// 		const respirationRes = await db.query(
-		// 			`SELECT temperature_celsius AS "temperatureCelsius", rr_mg_kg_hr AS "respirationRate", rr_class AS "respirationClass" FROM respiration_rates WHERE commodity_id = $1`,
-		// 			[
-		// 				id
-		// 			]
-		// 		);
+		const shelflLifeData = (await ShelfLife.getByCommodity(commodity.id)) || [];
+		commodity.shelfLife = shelflLifeData;
 
-		// 		commodity.respirationRates = respirationRes.rows[0];
-
-		// 		const referencesRes = await db.query(
-		// 			`SELECT source
-		//                 FROM references
-		// 		       WHERE commodity_id = $1`,
-		// 			[
-		// 				id
-		// 			]
-		// 		);
-
-		// 		commodity.references = referencesRes.rows;
-
-		// 		// commodity.references = referencesRes.rows.map((a) => referencesRes);
+		// const temperatureData = (await Temperature.getByCommodity(commodity.id)) || [];
+		// commodity.temperatureRecommendations = temperatureData;
 
 		return commodity;
 	}
@@ -136,15 +122,6 @@ class Commodity {
 		} catch (e) {
 			throw new NotFoundError(`No commodity: ${id}`);
 		}
-
-		// const result = await db.query(querySql, [
-		// 	...values
-		// ]);
-		// const commodity = result.rows[0];
-
-		// if (!commodity) throw new NotFoundError(`No commodity: ${id}`);
-
-		// return commodity;
 	}
 
 	static async remove(id) {

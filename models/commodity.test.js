@@ -4,6 +4,7 @@ const { NotFoundError, BadRequestError, UnauthorizedError } = require('../expres
 const db = require('../db.js');
 const Commodity = require('./commodity.js');
 const { commonBeforeAll, commonBeforeEach, commonAfterEach, commonAfterAll } = require('./_testModelsCommon');
+const { create } = require('./ethylene');
 
 beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
@@ -66,15 +67,30 @@ describe('findAll', function() {
 describe('get', function() {
 	test('works', async function() {
 		let commodity = await Commodity.get('id');
+		expect(commodity.id).toEqual('id');
+		expect(commodity.commodityName).toEqual('Test Commodity');
+		expect(commodity.ethyleneSensitivity.length).toEqual(1);
+		expect(commodity.ethyleneSensitivity[0].temperature).toBe('20');
+		expect(commodity.respirationRate.length).toEqual(1);
+		expect(commodity.respirationRate[0].rrClass).toBe('high');
+		expect(commodity.shelfLife.length).toEqual(1);
+		expect(commodity.shelfLife[0].shelfLife).toBe('1 day');
+	});
 
-		expect(commodity).toEqual({
-			id             : 'id',
-			commodityName  : 'Test Commodity',
-			variety        : 'Test',
-			scientificName : 'Test',
-			coolingMethod  : 'Test',
-			climacteric    : true
-		});
+	test('returns empty array if ethylene, respiration, or shelf life data does not exist', async function() {
+		const newCommodity = {
+			commodityName  : 'New Commodity',
+			variety        : 'New',
+			scientificName : 'New',
+			coolingMethod  : 'New',
+			climacteric    : false
+		};
+		const commodity = await Commodity.create({ ...newCommodity });
+
+		const res = await Commodity.get(commodity.id);
+		expect(res.ethyleneSensitivity.length).toBe(0);
+		expect(res.respirationRate.length).toBe(0);
+		expect(res.shelfLife.length).toBe(0);
 	});
 
 	test('not found if commodity does not exist', async function() {

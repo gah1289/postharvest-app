@@ -1,0 +1,61 @@
+{
+	"$schema": "https://json-schema.org/draft/2019-09/schema",
+	"$id": "http://example.com/example.json",
+	"type": "object",
+	"default": {},
+	"title": "Root Schema",
+	"required": [
+		"commodity_id"
+	],
+	"properties": {
+		"commodity_id": {
+			"type": "string",
+			"default": "",
+			"title": "The commodity_id Schema",
+			"examples": [
+				"id"
+			]
+		},
+		"temperature": {
+			"type": "string",
+			"default": "",
+			"title": "The temperature Schema",
+			"examples": [
+				"20"
+			]
+		},
+		"c2h4_production": {
+			"type": "string",
+			"default": "",
+			"title": "The c2h4_production Schema",
+			"examples": [
+				"10"
+			]
+		},
+		"c2h4_class": {
+			"type": "string",
+			"default": "",
+			"title": "The c2h4_class Schema",
+			"examples": [
+				"low"
+			]
+		},
+		"id": {
+			"type": "integer",
+			"default": 0,
+			"title": "The id Schema",
+			"examples": [
+				39
+			]
+		}
+	},
+	"examples": [
+		{
+			"commodity_id": "id",
+			"temperature": "20",
+			"c2h4_production": "10",
+			"c2h4_class": "low",
+			"id": 39
+		}
+	]
+}

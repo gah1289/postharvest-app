@@ -3,14 +3,21 @@
 const db = require('../db.js');
 const User = require('../models/user');
 const Commodity = require('../models/commodity');
-// const Job = require("../models/job");
+const Ethylene = require('../models/ethylene');
+const Respiration = require('../models/respiration');
+const ShelfLife = require('../models/shelfLife');
+const Temperature = require('../models/temperature');
 const { createToken } = require('../helpers/tokens');
 
-// const testJobIds = [];
 async function commonBeforeAll() {
 	// noinspection SqlWithoutWhere
 	await db.query('DELETE FROM users');
 	await db.query('DELETE FROM commodities');
+	await db.query('DELETE FROM ethylene_sensitivity');
+	await db.query('DELETE FROM shelf_life');
+	await db.query('DELETE FROM respiration_rates');
+	await db.query('DELETE FROM temperature_recommendations');
+
 	// noinspection SqlWithoutWhere
 
 	await Commodity.create({
@@ -29,27 +36,28 @@ async function commonBeforeAll() {
 		climacteric    : true
 	});
 
-	// await Company.create({
-	// 	handle       : 'c1',
-	// 	name         : 'C1',
-	// 	numEmployees : 1,
-	// 	description  : 'Desc1',
-	// 	logoUrl      : 'http://c1.img'
-	// });
-	// await Company.create({
-	// 	handle       : 'c2',
-	// 	name         : 'C2',
-	// 	numEmployees : 2,
-	// 	description  : 'Desc2',
-	// 	logoUrl      : 'http://c2.img'
-	// });
-	// await Company.create({
-	// 	handle       : 'c3',
-	// 	name         : 'C3',
-	// 	numEmployees : 3,
-	// 	description  : 'Desc3',
-	// 	logoUrl      : 'http://c3.img'
-	// });
+	await Ethylene.create('id', {
+		temperature    : '20',
+		c2h4Production : '10',
+		c2h4Class      : 'low'
+	});
+	await Respiration.create('id', {
+		temperature : '10',
+		rrRate      : '20-40',
+		rrClass     : 'high'
+	});
+	await ShelfLife.create('id', {
+		temperature : '0',
+		shelfLife   : '1 day',
+		description : 'test',
+		packaging   : 'test'
+	});
+	await Temperature.create('id', {
+		minTemp     : '5',
+		optimumTemp : '10',
+		description : 'test',
+		rh          : '90'
+	});
 
 	await User.register({
 		username  : 'u1',
