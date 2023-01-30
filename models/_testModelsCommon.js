@@ -7,6 +7,7 @@ const Ethylene = require('../models/ethylene');
 const Respiration = require('../models/respiration');
 const ShelfLife = require('../models/shelfLife');
 const Temperature = require('../models/temperature');
+const References = require('../models/references');
 const { createToken } = require('../helpers/tokens');
 
 async function commonBeforeAll() {
@@ -17,6 +18,7 @@ async function commonBeforeAll() {
 	await db.query('DELETE FROM shelf_life');
 	await db.query('DELETE FROM respiration_rates');
 	await db.query('DELETE FROM temperature_recommendations');
+	await db.query('DELETE FROM refs');
 
 	// noinspection SqlWithoutWhere
 
@@ -34,6 +36,9 @@ async function commonBeforeAll() {
 		scientificName : 'Test2',
 		coolingMethod  : 'Test2',
 		climacteric    : true
+	});
+	await References.create('id', {
+		source : 'website'
 	});
 
 	await Ethylene.create('id', {

@@ -95,8 +95,8 @@ class Commodity {
 		const shelflLifeData = (await ShelfLife.getByCommodity(commodity.id)) || [];
 		commodity.shelfLife = shelflLifeData;
 
-		// const temperatureData = (await Temperature.getByCommodity(commodity.id)) || [];
-		// commodity.temperatureRecommendations = temperatureData;
+		const temperatureData = (await Temperature.getByCommodity(commodity.id)) || [];
+		commodity.temperatureRecommendations = temperatureData;
 
 		return commodity;
 	}

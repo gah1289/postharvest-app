@@ -75,6 +75,7 @@ describe('get', function() {
 		expect(commodity.respirationRate[0].rrClass).toBe('high');
 		expect(commodity.shelfLife.length).toEqual(1);
 		expect(commodity.shelfLife[0].shelfLife).toBe('1 day');
+		expect(commodity.temperatureRecommendations[0].minTemp).toBe('5');
 	});
 
 	test('returns empty array if ethylene, respiration, or shelf life data does not exist', async function() {
@@ -91,6 +92,7 @@ describe('get', function() {
 		expect(res.ethyleneSensitivity.length).toBe(0);
 		expect(res.respirationRate.length).toBe(0);
 		expect(res.shelfLife.length).toBe(0);
+		expect(res.temperatureRecommendations.length).toBe(0);
 	});
 
 	test('not found if commodity does not exist', async function() {
