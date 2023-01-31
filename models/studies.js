@@ -3,7 +3,7 @@
 const db = require('../db');
 const { NotFoundError } = require('../expressError');
 const { sqlForPartialUpdate } = require('../helpers/sql');
-const { BadRequestError, ExpressError } = require('../expressError');
+const { ExpressError } = require('../expressError');
 
 class WindhamStudies {
 	// Create windham study (from data), update db, return new windham study data.

@@ -93,13 +93,9 @@ describe('update', function() {
 	test('works', async function() {
 		const res = await Temperature.getByCommodity('id');
 
-		console.log({ res });
-
 		const updateRes = await Temperature.update(res[0].id, {
 			minTemp : '20'
 		});
-
-		console.log({ updateRes });
 
 		expect(updateRes.commodityId).toEqual('id');
 		expect(updateRes.minTemp).toEqual('20');

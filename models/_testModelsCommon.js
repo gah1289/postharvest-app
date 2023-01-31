@@ -8,6 +8,8 @@ const Respiration = require('../models/respiration');
 const ShelfLife = require('../models/shelfLife');
 const Temperature = require('../models/temperature');
 const References = require('../models/references');
+const WindhamStudies = require('../models/studies');
+const WindhamStudiesCommodities = require('../models/studiesCommodities');
 const { createToken } = require('../helpers/tokens');
 
 async function commonBeforeAll() {
@@ -19,6 +21,8 @@ async function commonBeforeAll() {
 	await db.query('DELETE FROM respiration_rates');
 	await db.query('DELETE FROM temperature_recommendations');
 	await db.query('DELETE FROM refs');
+	await db.query('DELETE FROM windham_studies');
+	await db.query('DELETE FROM windham_studies_commodities');
 
 	// noinspection SqlWithoutWhere
 
@@ -62,6 +66,18 @@ async function commonBeforeAll() {
 		optimumTemp : '10',
 		description : 'test',
 		rh          : '90'
+	});
+	await WindhamStudies.create({
+		title     : 'Test Study',
+		date      : '1/29/2023',
+		source    : 'link to study',
+		objective : 'to test it'
+	});
+	await WindhamStudies.create({
+		title     : 'Test Study 2',
+		date      : '1/29/2023',
+		source    : 'another link to study',
+		objective : 'to test it'
 	});
 
 	await User.register({

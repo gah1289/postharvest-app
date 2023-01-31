@@ -83,7 +83,6 @@ class Temperature {
 	// Temperature is in celsius
 
 	static async update(id, data) {
-		console.log({ id }, { data });
 		const { setCols, values } = sqlForPartialUpdate(data, {
 			commodityId : 'commodity_id',
 			minTemp     : 'min_temp_celsius',
@@ -99,7 +98,6 @@ class Temperature {
 			const result = await db.query(querySql, [
 				...values
 			]);
-			console.log({ result });
 			return result.rows[0];
 		} catch (e) {
 			throw new NotFoundError(`No id found: ${id}`);
