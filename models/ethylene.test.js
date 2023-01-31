@@ -54,10 +54,8 @@ describe('update', function() {
 			c2h4Class : 'high'
 		});
 
-		const { ethyleneSensitivity } = res;
-
-		expect(ethyleneSensitivity.commodityId).toEqual('id');
-		expect(ethyleneSensitivity.c2h4Class).toEqual('high');
+		expect(res.commodityId).toEqual('id');
+		expect(res.c2h4Class).toEqual('high');
 	});
 	test('throws not found error if commodity not found', async function() {
 		try {

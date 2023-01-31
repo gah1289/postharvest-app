@@ -10,23 +10,27 @@ class Ethylene {
 	// Returns {commodityId, temperature, c2h4Production, c2h4Class}
 
 	static async create(commodityId, data) {
-		const result = await db.query(
-			`INSERT INTO ethylene_sensitivity (commodity_id,
+		try {
+			const result = await db.query(
+				`INSERT INTO ethylene_sensitivity (commodity_id,
             temperature,
             c2h4_production,
             c2h4_class)
                VALUES ($1, $2, $3, $4)
                RETURNING id, commodity_id AS "commodityId",  c2h4_production AS "c2h4Production", c2h4_class AS "c2h4Class", temperature`,
-			[
-				commodityId,
-				data.temperature,
-				data.c2h4Production,
-				data.c2h4Class
-			]
-		);
-		let ethyleneSensitivity = result.rows[0];
+				[
+					commodityId,
+					data.temperature,
+					data.c2h4Production,
+					data.c2h4Class
+				]
+			);
+			let ethyleneSensitivity = result.rows[0];
 
-		return ethyleneSensitivity;
+			return ethyleneSensitivity;
+		} catch (e) {
+			throw new NotFoundError(`Commodity id:${commodityId} not found`);
+		}
 	}
 
 	/** Given an id, return ethylene sensitivty data.
@@ -44,7 +48,11 @@ class Ethylene {
 			]
 		);
 
-		const ethyleneSensitivity = ethyleneRes.rows;
+		if (ethyleneRes.rows.length === 0) {
+			throw new NotFoundError(`Could not find ethylene data with id: ${id}`);
+		}
+
+		const ethyleneSensitivity = ethyleneRes.rows[0];
 
 		return ethyleneSensitivity;
 	}
@@ -94,8 +102,7 @@ class Ethylene {
 				...values
 			]);
 
-			const ethyleneSensitivity = result.rows[0];
-			return { ethyleneSensitivity };
+			return result.rows[0];
 		} catch (e) {
 			throw new NotFoundError(`No id found: ${id}`);
 		}

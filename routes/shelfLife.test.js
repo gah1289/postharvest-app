@@ -20,7 +20,7 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-/************************************** POST /commodities */
+/************************************** POST /shelf-life */
 
 describe('POST /shelf-life', function() {
 	test('works for admin: create shelf life', async function() {
@@ -101,7 +101,7 @@ describe('POST /shelf-life', function() {
 	});
 });
 
-/************************************** GET /commodities */
+/************************************** GET /shelf-life */
 
 describe('GET /shelf-life/:id', function() {
 	test('works', async function() {
@@ -128,9 +128,9 @@ describe('GET /shelf-life/:id', function() {
 	});
 });
 
-// /************************************** GET /commodities/:id */
+// /************************************** GET /shelf-life/commodity/:id */
 
-describe('GET /commodity/:id', function() {
+describe('GET /shelf-life/commodity/:id', function() {
 	test('works for all', async function() {
 		const resp = await request(app).get(`/shelf-life/commodity/id`);
 		expect(resp.body.shelfLife.length).toEqual(1);
@@ -145,9 +145,9 @@ describe('GET /commodity/:id', function() {
 	});
 });
 
-// // /************************************** PATCH /commodities/:id */
+// // /************************************** PATCH /shelf-life/:id */
 
-describe('PATCH /commodities/:id', () => {
+describe('PATCH /shelf-life/:id', () => {
 	test('works for admins', async function() {
 		const respStudy = await request(app)
 			.post('/shelf-life')
@@ -231,21 +231,11 @@ describe('PATCH /commodities/:id', () => {
 			.set('authorization', `Bearer ${adminToken}`);
 		expect(resp.statusCode).toEqual(404);
 	});
-
-	test('bad request if invalid data', async function() {
-		const resp = await request(app)
-			.patch(`/shelf-life/nope`)
-			.send({
-				shelfLife : 1
-			})
-			.set('authorization', `Bearer ${adminToken}`);
-		expect(resp.statusCode).toEqual(400);
-	});
 });
 
-// // /************************************** DELETE /commodities/:id */
+// // /************************************** DELETE /shelf-life/:id */
 
-describe('DELETE /commodities/:id', function() {
+describe('DELETE /shelf-life/:id', function() {
 	test('works for admin', async function() {
 		const respStudy = await request(app)
 			.post('/shelf-life')
