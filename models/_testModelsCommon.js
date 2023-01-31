@@ -67,7 +67,7 @@ async function commonBeforeAll() {
 		description : 'test',
 		rh          : '90'
 	});
-	await WindhamStudies.create({
+	const study1 = await WindhamStudies.create({
 		title     : 'Test Study',
 		date      : '1/29/2023',
 		source    : 'link to study',
@@ -79,6 +79,8 @@ async function commonBeforeAll() {
 		source    : 'another link to study',
 		objective : 'to test it'
 	});
+
+	await WindhamStudiesCommodities.create({ studyId: study1.id, commodityId: 'id' });
 
 	await User.register({
 		username  : 'u1',

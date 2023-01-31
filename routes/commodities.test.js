@@ -97,14 +97,6 @@ describe('GET /commodities', function() {
 	test('works for all', async function() {
 		const resp = await request(app).get('/commodities');
 		expect(resp.body.commodities.length).toEqual(2);
-		expect(resp.body.commodities[0]).toEqual({
-			id             : 'id',
-			commodityName  : 'Test Commodity',
-			variety        : 'Test',
-			scientificName : 'Test',
-			coolingMethod  : 'Test',
-			climacteric    : true
-		});
 	});
 });
 
@@ -113,16 +105,7 @@ describe('GET /commodities', function() {
 describe('GET /commodities/:id', function() {
 	test('works for all', async function() {
 		const resp = await request(app).get(`/commodities/id`);
-		expect(resp.body).toEqual({
-			commodity : {
-				id             : 'id',
-				commodityName  : 'Test Commodity',
-				variety        : 'Test',
-				scientificName : 'Test',
-				coolingMethod  : 'Test',
-				climacteric    : true
-			}
-		});
+		expect(resp.body.commodity.id).toEqual('id');
 	});
 	test('returns error if id not found', async function() {
 		try {

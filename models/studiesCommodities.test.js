@@ -27,7 +27,7 @@ describe('create', function() {
 		expect(res.commodityId).toEqual('id');
 		const found = await db.query(`SELECT * FROM windham_studies_commodities WHERE commodity_id = 'id' `);
 
-		expect(found.rows.length).toEqual(1);
+		expect(found.rows.length).toEqual(2);
 	});
 	test('throw error with bad data', async function() {
 		try {
@@ -135,7 +135,6 @@ describe('getByCommodityId', function() {
 			});
 			await WindhamStudiesCommodities.getByCommodityId({ studyId: study1.id, commodityId: 'badCommodityId' });
 		} catch (e) {
-			console.log({ e });
 			expect(e).toBeTruthy();
 		}
 	});

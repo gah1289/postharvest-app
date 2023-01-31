@@ -3,14 +3,26 @@
 const db = require('../db.js');
 const User = require('../models/user');
 const Commodity = require('../models/commodity');
+const Ethylene = require('../models/ethylene');
+const Respiration = require('../models/respiration');
+const ShelfLife = require('../models/shelfLife');
+const Temperature = require('../models/temperature');
+const References = require('../models/references');
+const WindhamStudies = require('../models/studies');
+const WindhamStudiesCommodities = require('../models/studiesCommodities');
 const { createToken } = require('../helpers/tokens');
-
-// const testJobIds = [];
 
 async function commonBeforeAll() {
 	// noinspection SqlWithoutWhere
 	await db.query('DELETE FROM users');
 	await db.query('DELETE FROM commodities');
+	await db.query('DELETE FROM ethylene_sensitivity');
+	await db.query('DELETE FROM shelf_life');
+	await db.query('DELETE FROM respiration_rates');
+	await db.query('DELETE FROM temperature_recommendations');
+	await db.query('DELETE FROM refs');
+	await db.query('DELETE FROM windham_studies');
+	await db.query('DELETE FROM windham_studies_commodities');
 	// noinspection SqlWithoutWhere
 
 	await Commodity.create({
@@ -28,6 +40,46 @@ async function commonBeforeAll() {
 		coolingMethod  : 'Test2',
 		climacteric    : true
 	});
+	await References.create('id', {
+		source : 'website'
+	});
+
+	await Ethylene.create('id', {
+		temperature    : '20',
+		c2h4Production : '10',
+		c2h4Class      : 'low'
+	});
+	await Respiration.create('id', {
+		temperature : '10',
+		rrRate      : '20-40',
+		rrClass     : 'high'
+	});
+	await ShelfLife.create('id', {
+		temperature : '0',
+		shelfLife   : '1 day',
+		description : 'test',
+		packaging   : 'test'
+	});
+	await Temperature.create('id', {
+		minTemp     : '5',
+		optimumTemp : '10',
+		description : 'test',
+		rh          : '90'
+	});
+	const study1 = await WindhamStudies.create({
+		title     : 'Test Study',
+		date      : '1/29/2023',
+		source    : 'link to study',
+		objective : 'to test it'
+	});
+	await WindhamStudies.create({
+		title     : 'Test Study 2',
+		date      : '1/29/2023',
+		source    : 'another link to study',
+		objective : 'to test it'
+	});
+
+	await WindhamStudiesCommodities.create({ studyId: study1.id, commodityId: 'id' });
 	// await Company.create({
 	// 	handle       : 'c1',
 	// 	name         : 'C1',

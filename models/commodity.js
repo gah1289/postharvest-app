@@ -8,6 +8,7 @@ const Ethylene = require('./ethylene');
 const Respiration = require('./respiration');
 const ShelfLife = require('./shelfLife');
 const Temperature = require('./temperature');
+const WindhamStudiesCommodities = require('./studiesCommodities');
 
 class Commodity {
 	// Create a commodity (from data), update db, return new commodity data.
@@ -97,6 +98,9 @@ class Commodity {
 
 		const temperatureData = (await Temperature.getByCommodity(commodity.id)) || [];
 		commodity.temperatureRecommendations = temperatureData;
+
+		const studyData = (await WindhamStudiesCommodities.getByCommodityId(commodity.id)) || [];
+		commodity.windhamStudies = studyData;
 
 		return commodity;
 	}

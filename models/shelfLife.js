@@ -1,7 +1,7 @@
 'use strict';
 
 const db = require('../db');
-const { NotFoundError } = require('../expressError');
+const { NotFoundError, BadRequestError } = require('../expressError');
 const { sqlForPartialUpdate } = require('../helpers/sql');
 
 class ShelfLife {
@@ -49,6 +49,10 @@ class ShelfLife {
 				id
 			]
 		);
+
+		if (shelfLifeRes.rows.length === 0) {
+			throw new NotFoundError(`Could not find study with id: ${id}`);
+		}
 
 		return shelfLifeRes.rows[0];
 	}

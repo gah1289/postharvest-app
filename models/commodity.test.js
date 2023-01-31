@@ -76,6 +76,7 @@ describe('get', function() {
 		expect(commodity.shelfLife.length).toEqual(1);
 		expect(commodity.shelfLife[0].shelfLife).toBe('1 day');
 		expect(commodity.temperatureRecommendations[0].minTemp).toBe('5');
+		expect(commodity.windhamStudies.length).toBe(1);
 	});
 
 	test('returns empty array if ethylene, respiration, or shelf life data does not exist', async function() {
