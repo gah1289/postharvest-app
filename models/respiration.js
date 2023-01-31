@@ -49,6 +49,10 @@ class Respiration {
 			]
 		);
 
+		if (respirationRes.rows.length === 0) {
+			throw new NotFoundError(`Could not find respiration rate data with id: ${id}`);
+		}
+
 		const respirationRate = respirationRes.rows[0];
 
 		return respirationRate;
@@ -103,7 +107,7 @@ class Respiration {
 			]);
 			const respirationRate = result.rows[0];
 
-			return { respirationRate };
+			return respirationRate;
 		} catch (e) {
 			throw new NotFoundError(`No id found: ${id}`);
 		}

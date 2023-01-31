@@ -92,7 +92,7 @@ describe('update', function() {
 			rrRate : 'low'
 		});
 
-		const { respirationRate } = res;
+		const respirationRate = res;
 
 		expect(respirationRate.commodityId).toEqual('id');
 		expect(respirationRate.rrRate).toEqual('low');

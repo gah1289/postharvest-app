@@ -13,6 +13,7 @@ const commoditiesRoutes = require('./routes/commodities');
 const usersRoutes = require('./routes/users');
 const shelfLifeRoutes = require('./routes/shelfLife');
 const ethyleneRoutes = require('./routes/ethylene');
+const respirationRoutes = require('./routes/respiration');
 
 const morgan = require('morgan');
 
@@ -33,6 +34,7 @@ app.use('/commodities', commoditiesRoutes);
 app.use('/users', usersRoutes);
 app.use('/shelf-life', shelfLifeRoutes);
 app.use('/ethylene', ethyleneRoutes);
+app.use('/respiration', respirationRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function(req, res, next) {

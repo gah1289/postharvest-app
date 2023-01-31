@@ -1,25 +1,25 @@
 'use strict';
 
-/** Routes for ethylene data. */
+/** Routes for shelf life studies. */
 
 const jsonschema = require('jsonschema');
 
 const express = require('express');
 const { ensureAdmin } = require('../middleware/auth');
 const { BadRequestError, NotFoundError } = require('../expressError');
-const Ethylene = require('../models/ethylene');
 
-const ethyleneNewSchema = require('../schemas/ethyleneNew.json');
-const ethyleneUpdateSchema = require('../schemas/ethyleneUpdate.json');
+const respirationNewSchema = require('../schemas/respirationNew.json');
+const respirationUpdateSchema = require('../schemas/respirationUpdate.json');
+const Respiration = require('../models/respiration');
 
 const router = express.Router();
 
-/** POST / { ethylene }  => { ethylene }
+/** POST / { respiration }  => { respiration }
  *
- * Adds a new ethylene sensitivity object. 
+ * Adds a new respiration rate object. 
  *
- * This returns the newly created ethylene data 
- *  {ethylene: {id, commodityId, temperature, c2h4Production, c2h4Class} }
+ * This returns the newly created respiration rate data 
+ *  {respiration: {id, commodityId, temperature, rrRate, rrClass} }
  *
  *  Authorization required: admin
  * 
@@ -27,33 +27,27 @@ const router = express.Router();
 
 router.post('/', ensureAdmin, async function(req, res, next) {
 	try {
-		const validator = jsonschema.validate(req.body, ethyleneNewSchema);
+		const validator = jsonschema.validate(req.body, respirationNewSchema);
 
 		if (!validator.valid) {
 			const errs = validator.errors.map((e) => e.stack);
 			throw new BadRequestError(errs);
 		}
 
-		const ethylene = await Ethylene.create(req.body.commodityId, req.body.data);
+		const respiration = await Respiration.create(req.body.commodityId, req.body.data);
 
-		return res.status(201).json({ ethylene });
+		return res.status(201).json({ respiration });
 	} catch (err) {
 		return next(err);
 	}
 });
 
-/** GET /[ethyleneId] => {ethylene}
+/** GET /[respirationId] => {respiration}
  * 
- * Pass in ethylene id in req.params
+ * Pass in a respiration id in req.params
  *
  *  Returns  {
-        ethylene: {
-          id: int,
-          commodityId: str,
-          temperature: str,
-          c2h4Production: str,
-          c2h4Class: str
-        }
+       respiration: {id, commodityId, temperature, rrRate, rrClass}
       }
  *
 
@@ -62,23 +56,23 @@ router.post('/', ensureAdmin, async function(req, res, next) {
 router.get('/:id', async function(req, res, next) {
 	try {
 		const id = req.params.id;
-		const ethylene = await Ethylene.getById(id);
-		return res.json({ ethylene });
+		const respiration = await Respiration.getById(id);
+		return res.json({ respiration });
 	} catch (e) {
 		next(e);
 	}
 });
 
-/** GET /[commodityId] => [...{ ethylene }]
+/** GET /[commodityId] => [...{ respiration }]
  *
  *  Returns{
-        ethylene: [
+        respiration: [
           {
            id: int,
           commodityId: str,
           temperature: str,
-          c2h4Production: str,
-          c2h4Class: str
+          rrRate: str,
+          rrClass: str
           }
         ]
       }
@@ -88,34 +82,33 @@ router.get('/:id', async function(req, res, next) {
 
 router.get('/commodity/:id', async function(req, res, next) {
 	try {
-		const ethylene = await Ethylene.getByCommodity(req.params.id);
-		if (ethylene.length === 0) {
+		const respiration = await Respiration.getByCommodity(req.params.id);
+		if (respiration.length === 0) {
 			// throw error if not studies are found. I want to use this to redirect to a 404 page.
-			throw new NotFoundError(`No ethylene data found for commodity${id}`);
+			throw new NotFoundError(`No respiration rate data found for commodity${id}`);
 		}
-		return res.json({ ethylene });
+		return res.json({ respiration });
 	} catch (err) {
 		return next(err);
 	}
 });
 
-/** PATCH /[id] { ethylene } => { ethylene }
+/** PATCH /[id] { shelfLife } => { shelfLife }
  *
  * Data can include:
- *   { temperature: str,
-          c2h4Production: str,
-          c2h4Class: str }
+ *   { temperature, rrRate, rrClass }
  *
  * Returns  {
        
-        ethylene: 
+         respiration: 
           {
-        	id: int,
+           id: int,
           commodityId: str,
           temperature: str,
-          c2h4Production: str,
-          c2h4Class: str
+          rrRate: str,
+          rrClass: str
           }
+        
         
       }
       Authorization required: admin
@@ -124,13 +117,13 @@ router.get('/commodity/:id', async function(req, res, next) {
 
 router.patch('/:id', ensureAdmin, async function(req, res, next) {
 	try {
-		const validator = jsonschema.validate(req.body, ethyleneUpdateSchema);
+		const validator = jsonschema.validate(req.body, respirationUpdateSchema);
 		if (!validator.valid) {
 			const errs = validator.errors.map((e) => e.stack);
 			throw new BadRequestError(errs);
 		}
-		const ethylene = await Ethylene.update(req.params.id, req.body);
-		return res.json({ ethylene });
+		const respiration = await Respiration.update(req.params.id, req.body);
+		return res.json({ respiration });
 	} catch (err) {
 		next(err);
 	}
@@ -143,7 +136,7 @@ router.patch('/:id', ensureAdmin, async function(req, res, next) {
 
 router.delete('/:id', ensureAdmin, async function(req, res, next) {
 	try {
-		await Ethylene.remove(req.params.id);
+		await Respiration.remove(req.params.id);
 		return res.json({ deleted: req.params.id });
 	} catch (err) {
 		return next(err);

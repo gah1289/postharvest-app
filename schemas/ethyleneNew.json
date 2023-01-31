@@ -5,10 +5,10 @@
 	"default": {},
 	"title": "Root Schema",
 	"required": [
-		"commodity_id"
+		"commodityId"
 	],
 	"properties": {
-		"commodity_id": {
+		"commodityId": {
 			"type": "string",
 			"default": "",
 			"title": "The commodity_id Schema",
@@ -24,7 +24,7 @@
 				"20"
 			]
 		},
-		"c2h4_production": {
+		"c2h4Production": {
 			"type": "string",
 			"default": "",
 			"title": "The c2h4_production Schema",
@@ -32,7 +32,7 @@
 				"10"
 			]
 		},
-		"c2h4_class": {
+		"c2h4Class": {
 			"type": "string",
 			"default": "",
 			"title": "The c2h4_class Schema",
@@ -51,10 +51,10 @@
 	},
 	"examples": [
 		{
-			"commodity_id": "id",
+			"commodityId": "id",
 			"temperature": "20",
-			"c2h4_production": "10",
-			"c2h4_class": "low",
+			"c2h4Production": "10",
+			"c2h4Class": "low",
 			"id": 39
 		}
 	]
