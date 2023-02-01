@@ -46,6 +46,9 @@ class WindhamStudies {
 		const res = await db.query(`SELECT * FROM windham_studies  WHERE id = $1 `, [
 			id
 		]);
+		if (res.rows.length === 0) {
+			throw new NotFoundError(`Could not find study data with id: ${id}`);
+		}
 
 		return res.rows[0];
 	}

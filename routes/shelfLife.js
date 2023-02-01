@@ -1,6 +1,6 @@
 'use strict';
 
-/** Routes for shelf life studies. */
+/** Routes for reference data. */
 
 const jsonschema = require('jsonschema');
 
@@ -14,12 +14,12 @@ const shelfLifeUpdateSchema = require('../schemas/shelfLifeUpdate.json');
 
 const router = express.Router();
 
-/** POST / { shelfLife }  => { shelfLife }
+/** POST / { reference }  => { reference }
  *
- * Adds a new shelf life object. 
+ * Adds a new reference object. 
  *
  * This returns the newly created shelf life data 
- *  {shelfLife: {id, commodityId, shelfLife, packaging, description} }
+ *  {reference: {id, commodityId, shelfLife, packaging, description} }
  *
  *  Authorization required: admin
  * 

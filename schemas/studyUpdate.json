@@ -1,0 +1,50 @@
+{
+	"$schema": "https://json-schema.org/draft/2019-09/schema",
+	"$id": "http://example.com/example.json",
+	"type": "object",
+	"default": {},
+	"title": "Root Schema",
+	"required": [],
+	"properties": {
+		"title": {
+			"type": "string",
+			"default": "",
+			"title": "The title Schema",
+			"examples": [
+				"'Test Study'"
+			]
+		},
+		"date": {
+			"type": "string",
+			"default": "",
+			"title": "The date Schema",
+			"examples": [
+				"'1/29/2023'"
+			]
+		},
+		"source": {
+			"type": "string",
+			"default": "",
+			"title": "The source Schema",
+			"examples": [
+				"'link to study'"
+			]
+		},
+		"objective": {
+			"type": "string",
+			"default": "",
+			"title": "The objective Schema",
+			"examples": [
+				"'to test it'"
+			]
+		}
+	},
+	"examples": [
+		{
+			"title": "'Test Study'",
+			"date": "'1/29/2023'",
+			"source": "'link to study'",
+			"objective": "'to test it'"
+		}
+	]
+}

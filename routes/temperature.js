@@ -1,6 +1,6 @@
 'use strict';
 
-/** Routes for shelf life studies. */
+/** Routes for temperature recommendation data. */
 
 const jsonschema = require('jsonschema');
 

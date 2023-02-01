@@ -1,0 +1,52 @@
+{
+	"$schema": "https://json-schema.org/draft/2019-09/schema",
+	"$id": "http://example.com/example.json",
+	"type": "object",
+	"default": {},
+	"title": "Root Schema",
+	"required": [
+		"commodityId",
+		"data"
+	],
+	"properties": {
+		"commodityId": {
+			"type": "string",
+			"default": "",
+			"title": "The commodityId Schema",
+			"examples": [
+				"id"
+			]
+		},
+		"data": {
+			"type": "object",
+			"default": {},
+			"title": "The data Schema",
+			"required": [
+				"source"
+			],
+			"properties": {
+				"source": {
+					"type": "string",
+					"default": "",
+					"title": "The source Schema",
+					"examples": [
+						"website"
+					]
+				}
+			},
+			"examples": [
+				{
+					"source": "website"
+				}
+			]
+		}
+	},
+	"examples": [
+		{
+			"commodityId": "id",
+			"data": {
+				"source": "website"
+			}
+		}
+	]
+}

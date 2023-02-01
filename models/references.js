@@ -1,7 +1,7 @@
 'use strict';
 
 const db = require('../db');
-const { NotFoundError } = require('../expressError');
+const { NotFoundError, BadRequestError } = require('../expressError');
 
 class References {
 	// Create reference information (from data), update db, return new reference data.
@@ -9,17 +9,27 @@ class References {
 	// Returns {commodityId, source}
 
 	static async create(commodityId, data) {
-		const result = await db.query(
-			`INSERT INTO refs (commodity_id,
-            source)
-               VALUES ($1, $2)
-               RETURNING commodity_id AS "commodityId", source`,
-			[
-				commodityId,
-				data.source
-			]
-		);
-		return result.rows[0];
+		try {
+			if (!commodityId) {
+				throw new BadRequestError('Please enter a commodity Id');
+			}
+			if (!data) {
+				throw new BadRequestError('Please enter a reference source');
+			}
+			const result = await db.query(
+				`INSERT INTO refs (commodity_id,
+					source)
+					   VALUES ($1, $2)
+					   RETURNING commodity_id AS "commodityId", source`,
+				[
+					commodityId,
+					data.source
+				]
+			);
+			return result.rows[0];
+		} catch (e) {
+			throw new NotFoundError(`Could not add reference: ${data.source} for commodity: ${commodityId}`);
+		}
 	}
 
 	// // 	/** Given a commodity id, return all reference data about commodity.
