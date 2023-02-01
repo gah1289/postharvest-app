@@ -11,7 +11,7 @@ const { BadRequestError, NotFoundError } = require('../expressError');
 const studyNewSchema = require('../schemas/studyNew.json');
 const studyUpdateSchema = require('../schemas/studyUpdate.json');
 const WindhamStudies = require('../models/studies');
-
+const WindhamStudiesCommodities = require('../models/studiesCommodities');
 const router = express.Router();
 
 /** POST / { study }  => { study }
@@ -56,7 +56,6 @@ router.get('/:id', async function(req, res, next) {
 	try {
 		const id = req.params.id;
 		const study = await WindhamStudies.getById(id);
-		console.log({ study });
 		return res.json({ study });
 	} catch (e) {
 		next(e);
@@ -108,4 +107,50 @@ router.delete('/:id', ensureAdmin, async function(req, res, next) {
 		return next(err);
 	}
 });
+
+/********************************* Studies + Commodities */
+// Link a windham study to one or multiple commodities from commodities table
+
+// POST /:commodityId {data: studyId, commodityId}=> { studyCommodity: { commodityId, studyId } }
+
+router.post('/:commodityId', ensureAdmin, async function(req, res, next) {
+	try {
+		const data = { studyId: req.body.studyId, commodityId: req.params.commodityId };
+		const studyCommodity = await WindhamStudiesCommodities.create(data);
+		return res.status(201).json({ studyCommodity });
+	} catch (err) {
+		return next(err);
+	}
+});
+
+// GET /studies/commodity/:id => { studyCommodity: { commodityId, studyId } }
+
+// list all Windham studies associated with a commodity
+
+router.get('/commodity/:id', ensureAdmin, async function(req, res, next) {
+	try {
+		const commodityId = req.params.id;
+
+		const studies = await WindhamStudiesCommodities.getByCommodityId(commodityId);
+		return res.status(200).json({ studies });
+	} catch (err) {
+		return next(err);
+	}
+});
+
+// GET /studies/study/:id => { studyCommodity: { commodityId, studyId } }
+
+// list all Windham studies associated with a commodity
+
+router.get('/study/:id', ensureAdmin, async function(req, res, next) {
+	try {
+		const studyId = req.params.id;
+
+		const commodities = await WindhamStudiesCommodities.getByStudyId(studyId);
+		return res.status(200).json({ commodities });
+	} catch (err) {
+		return next(err);
+	}
+});
+
 module.exports = router;

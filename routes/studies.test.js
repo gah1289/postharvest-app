@@ -217,3 +217,144 @@ describe('DELETE /studies/:id', function() {
 		expect(resp.statusCode).toEqual(404);
 	});
 });
+
+/************************************** POST /studies/:commodityId */
+
+describe('POST /studies/:commodityId', function() {
+	test('works for admin: create windham study', async function() {
+		const study = await request(app)
+			.post('/studies')
+			.send({
+				title     : 'Another Study',
+				date      : '1/31/2023',
+				source    : 'link to study',
+				objective : 'to test it'
+			})
+			.set('authorization', `Bearer ${adminToken}`);
+		const studyId = study.body.study.id;
+
+		const studyCommodity = await request(app)
+			.post(`/studies/id`)
+			.send({ studyId })
+			.set('authorization', `Bearer ${adminToken}`);
+
+		expect(studyCommodity.status).toBe(201);
+		expect(studyCommodity.body.studyCommodity.studyId).toBe(studyId);
+		expect(studyCommodity.body.studyCommodity.commodityId).toBe('id');
+	});
+	test('does not work for user', async function() {
+		const study = await request(app)
+			.post('/studies')
+			.send({
+				title     : 'Another Study',
+				date      : '1/31/2023',
+				source    : 'link to study',
+				objective : 'to test it'
+			})
+			.set('authorization', `Bearer ${adminToken}`);
+		const studyId = study.body.study.id;
+
+		const studyCommodity = await request(app)
+			.post(`/studies/id`)
+			.send({ studyId })
+			.set('authorization', `Bearer ${u1Token}`);
+		expect(studyCommodity.statusCode).toEqual(401);
+	});
+	test('does not work for anon', async function() {
+		const study = await request(app)
+			.post('/studies')
+			.send({
+				title     : 'Another Study',
+				date      : '1/31/2023',
+				source    : 'link to study',
+				objective : 'to test it'
+			})
+			.set('authorization', `Bearer ${adminToken}`);
+		const studyId = study.body.study.id;
+
+		const studyCommodity = await request(app).post(`/studies/id`).send({ studyId });
+
+		expect(studyCommodity.statusCode).toEqual(401);
+	});
+});
+
+/************************************** GET /studies/commodity/:id */
+
+describe('GET /studies/commodity/:id', function() {
+	test('works for admin: get windham studies associated with commodity', async function() {
+		const studies = await request(app).get(`/studies/commodity/id`).set('authorization', `Bearer ${adminToken}`);
+
+		expect(studies.status).toBe(200);
+		expect(studies.body.studies.length).toBe(1);
+	});
+	test('does not work for user', async function() {
+		const studies = await request(app).get(`/studies/commodity/id`).set('authorization', `Bearer ${u1Token}`);
+		expect(studies.statusCode).toEqual(401);
+	});
+	test('does not work for anon', async function() {
+		const studies = await request(app).get(`/studies/commodity/id`);
+
+		expect(studies.statusCode).toEqual(401);
+	});
+});
+
+/************************************** GET /studies/study/:id */
+
+describe('GET /studies/study/:id', function() {
+	test('works for admin: get commodities associated with  windham study', async function() {
+		const study = await request(app)
+			.post('/studies')
+			.send({
+				title     : 'Another Study',
+				date      : '1/31/2023',
+				source    : 'link to study',
+				objective : 'to test it'
+			})
+			.set('authorization', `Bearer ${adminToken}`);
+		const studyId = study.body.study.id;
+
+		await request(app).post(`/studies/id`).send({ studyId }).set('authorization', `Bearer ${adminToken}`);
+
+		const studies = await request(app)
+			.get(`/studies/study/${studyId}`)
+			.set('authorization', `Bearer ${adminToken}`);
+
+		expect(studies.status).toBe(200);
+		expect(studies.body.commodities.length).toBe(1);
+	});
+	test('does not work for user', async function() {
+		const study = await request(app)
+			.post('/studies')
+			.send({
+				title     : 'Another Study',
+				date      : '1/31/2023',
+				source    : 'link to study',
+				objective : 'to test it'
+			})
+			.set('authorization', `Bearer ${adminToken}`);
+		const studyId = study.body.study.id;
+
+		await request(app).post(`/studies/id`).send({ studyId }).set('authorization', `Bearer ${adminToken}`);
+
+		const studies = await request(app).get(`/studies/study/${studyId}`).set('authorization', `Bearer ${u1Token}`);
+		expect(studies.statusCode).toEqual(401);
+	});
+	test('does not work for anon', async function() {
+		const study = await request(app)
+			.post('/studies')
+			.send({
+				title     : 'Another Study',
+				date      : '1/31/2023',
+				source    : 'link to study',
+				objective : 'to test it'
+			})
+			.set('authorization', `Bearer ${adminToken}`);
+		const studyId = study.body.study.id;
+
+		await request(app).post(`/studies/id`).send({ studyId }).set('authorization', `Bearer ${adminToken}`);
+
+		const studies = await request(app).get(`/studies/study/${studyId}`);
+
+		expect(studies.statusCode).toEqual(401);
+	});
+});

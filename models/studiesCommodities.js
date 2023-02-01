@@ -11,6 +11,7 @@ class WindhamStudiesCommodities {
 	// Returns {commodityId, studyId}
 
 	static async create(data) {
+		console.log({ data });
 		const { studyId, commodityId } = data;
 
 		if (!studyId) {
@@ -31,6 +32,7 @@ class WindhamStudiesCommodities {
 					studyId
 				]
 			);
+
 			return result.rows[0];
 		} catch (e) {
 			return e;
