@@ -51,6 +51,10 @@ class Temperature {
 			]
 		);
 
+		if (res.rows.length === 0) {
+			throw new NotFoundError(`Could not find temperature recommendation data with id: ${id}`);
+		}
+
 		return res.rows[0];
 	}
 

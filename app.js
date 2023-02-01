@@ -14,6 +14,7 @@ const usersRoutes = require('./routes/users');
 const shelfLifeRoutes = require('./routes/shelfLife');
 const ethyleneRoutes = require('./routes/ethylene');
 const respirationRoutes = require('./routes/respiration');
+const temperatureRoutes = require('./routes/temperature');
 
 const morgan = require('morgan');
 
@@ -35,6 +36,7 @@ app.use('/users', usersRoutes);
 app.use('/shelf-life', shelfLifeRoutes);
 app.use('/ethylene', ethyleneRoutes);
 app.use('/respiration', respirationRoutes);
+app.use('/temperature', temperatureRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function(req, res, next) {

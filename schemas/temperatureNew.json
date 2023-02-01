@@ -1,0 +1,60 @@
+{
+	"$schema": "https://json-schema.org/draft/2019-09/schema",
+	"$id": "http://example.com/example.json",
+	"type": "object",
+	"default": {},
+	"title": "Root Schema",
+	"required": [
+		"commodityId"
+	],
+	"properties": {
+		"commodityId": {
+			"type": "string",
+			"default": "",
+			"title": "The commodity_id Schema",
+			"examples": [
+				"id"
+			]
+		},
+		"minTemp": {
+			"type": "string",
+			"default": "",
+			"title": "The minTemp Schema",
+			"examples": [
+				"5"
+			]
+		},
+		"optimumTemp": {
+			"type": "string",
+			"default": "",
+			"title": "The optimumTemp Schema",
+			"examples": [
+				"10"
+			]
+		},
+		"description": {
+			"type": "string",
+			"default": "",
+			"title": "The description Schema",
+			"examples": [
+				"test"
+			]
+		},
+		"rh": {
+			"type": "string",
+			"default": "",
+			"title": "The rh Schema",
+			"examples": [
+				"90"
+			]
+		}
+	},
+	"examples": [
+		{
+			"minTemp": "5",
+			"optimumTemp": "10",
+			"description": "test",
+			"rh": "90"
+		}
+	]
+}
