@@ -48,8 +48,10 @@ router.post('/token', async function(req, res, next) {
  * Authorization required: none
  */
 router.get('/login', (req, res) => {
+	const token = req.query.token || req.body.token;
+
 	//verify the JWT token generated for the user
-	jwt.verify(req.body.token, SECRET_KEY, (err, authorizedData) => {
+	jwt.verify(token, SECRET_KEY, (err, authorizedData) => {
 		if (err) {
 			//If error send Forbidden (403)
 			console.log('ERROR: Could not connect to the protected route');
