@@ -1,6 +1,8 @@
 # postharvest-app-backend
 
 ## Project Summary
+This Postharvest appallows a user to look up information on various fruit and vegetable commodities. The user will be able to log in, search for commodities by name and filter by parameters such as climacteric, respiration class, and temperature category. Admins will have the ability to add and edit commodities. This app is designed for Windham Packaging, LLC, a company that provides specialized packaging for fresh produce. The admins will be myself and the owner, Dr. Elizabeth Marston. This is an evenly-focused full stack application.  
+
 
 ## User Flow
 ### Routes
@@ -15,14 +17,25 @@
 - **GET /users/:username**: /[username] => { user }. Returns { username, firstName, lastName, isAdmin, jobTitle }.  Authorization required: admin or same user-as-:username
 - **PATCH /users/:username**: /[username] {user} => { user }. Data can include: { firstName, lastName, password, email }. Returns { username, firstName, lastName, isAdmin, jobTitle }.  Authorization required: admin or same user-as-:username. 
 - **DELETE /users/:username**: /[username]  =>  { deleted: username }. Authorization required: admin or same user-as-:username. 
-#### /auth
-#### /auth
-#### /auth
+#### /commodities
+#### /ethylene
+#### /shelfLife
+#### /respiration
+#### /temperature
+#### /refs
+#### /studies
 
-## Middleware
-- 
+### Middleware
+- Uses *morgan*, HTTP request logger middleware for node.js
+- Uses *jsonwebtoken* to verify tokens
+- **authenticateJWT**: If a token was provided, verify it, and, if valid, store the token payload on res.locals (this will include the username and isAdmin field.). Does not throw error if no token was provided or if the token is not valid.
+- **ensureLoggedIn**:  Middleware to use when user must be logged in. If not, raises Unauthorized error
+- **ensureAdmin**: Middleware to use when they be logged in as an admin user. If not, raises Unauthorized error
+- **ensureCorrectUserOrAdmin**:  Middleware to use when they must provide a valid token & be user matching username provided as route param. If not, raises Unauthorized error.
 
- ## Data model
+ ### Data model
+ ## Schema
+![Screenshot](Postharvest-App-Schema.png)
  #### User
  - **authenticate**: authenticate user with username, password. Returns { username, first_name, last_name, email, is_admin }. Throws UnauthorizedError is user not found or wrong password.
  - **register**: Register user with data { username, firstName, lastName, email, jobTitle, isAdmin=false }. Returns { username, firstName, lastName, email, isAdmin }.Throws BadRequestError on duplicates.
@@ -36,7 +49,16 @@
 - https://postharvest.ucdavis.edu/Commodity_Resources/Fact_Sheets/
 - https://www.ars.usda.gov/arsuserfiles/oc/np/commercialstorage/commercialstorage.pdf
 
-## Back-end Schema
-![Screenshot](Postharvest-App-Schema.png)
+
+
+## Tech Stack
+- Node.js
+- PostgresQL
+- Express
+
+## Testing
+- Jest
+- 
+
 
 

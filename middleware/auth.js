@@ -30,7 +30,7 @@ function authenticateJWT(req, res, next) {
 	}
 }
 
-/** Middleware to use when they must be logged in.
+/** Middleware to use when user must be logged in.
  *
  * If not, raises Unauthorized.
  */

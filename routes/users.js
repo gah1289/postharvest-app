@@ -79,7 +79,7 @@ router.get('/:username', ensureCorrectUserOrAdmin, async function(req, res, next
  * Data can include:
  *   { firstName, lastName, password, email }
  *
- * Returns { username, firstName, lastName, email, isAdmin, tobTitle }
+ * Returns { username, firstName, lastName, email, isAdmin, jobTitle }
  *
  * Authorization required: admin or same-user-as-:username
  **/
