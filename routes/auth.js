@@ -43,7 +43,7 @@ router.post('/token', async function(req, res, next) {
 /** GET /auth/login:  { username, password } => { token }
  *Occurs when user tries to log in
  * 
- * If successful, returns Jsuccessful log in message with user data.
+ * If successful, returns successful log in message with user data.
  *
  * Authorization required: none
  */
