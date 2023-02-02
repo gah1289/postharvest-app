@@ -50,7 +50,7 @@ class User {
 
 	/** Register user with data.
    *
-   * Returns { username, firstName, lastName, email, isAdmin }
+   * Returns { username, firstName, lastName, jobTitle, email, isAdmin=false }
    *
    * Throws BadRequestError on duplicates.
    **/
@@ -120,8 +120,8 @@ class User {
 
 	/** Given a username, return data about user.
    *
-   * Returns { username, first_name, last_name, is_admin, jobs }
-   *   where jobs is { id, title, company_handle, company_name, state }
+   * Returns { username, first_name, last_name, is_admin, jobTitle, email }
+   *   
    *
    * Throws NotFoundError if user not found.
    **/
@@ -160,8 +160,7 @@ class User {
    * Throws NotFoundError if not found.
    *
    * WARNING: this function can set a new password or make a user an admin.
-   * Callers of this function must be certain they have validated inputs to this
-   * or a serious security risks are opened.
+   *
    */
 
 	static async update(username, data) {

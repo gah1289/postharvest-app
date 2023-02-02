@@ -42,7 +42,7 @@ router.post('/', async function(req, res, next) {
 	}
 });
 
-/** GET / => { users: [ {username, firstName, lastName, email }, ... ] }
+/** GET / => { users: [ {username, firstName, lastName, email jobTitle}, ... ] }
  *
  * Returns list of all users.
  *
@@ -79,7 +79,7 @@ router.get('/:username', ensureCorrectUserOrAdmin, async function(req, res, next
  * Data can include:
  *   { firstName, lastName, password, email }
  *
- * Returns { username, firstName, lastName, email, isAdmin }
+ * Returns { username, firstName, lastName, email, isAdmin, tobTitle }
  *
  * Authorization required: admin or same-user-as-:username
  **/
