@@ -93,6 +93,7 @@ router.get('/commodity/:id', async function(req, res, next) {
 			// throw error if not studies are found. I want to use this to redirect to a 404 page.
 			throw new NotFoundError(`No ethylene data found for commodity${id}`);
 		}
+
 		return res.json({ ethylene });
 	} catch (err) {
 		return next(err);

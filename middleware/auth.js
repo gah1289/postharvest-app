@@ -22,7 +22,6 @@ function authenticateJWT(req, res, next) {
 			// Authorization header requires Bearer as the type, with the JWT token being the credentials.
 			const token = authHeader.replace(/^[Bb]earer /, '').trim();
 			res.locals.user = jwt.verify(token, SECRET_KEY);
-			console.log('RES LOCALS USER', res.locals.user);
 		}
 		return next();
 	} catch (err) {

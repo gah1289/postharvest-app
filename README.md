@@ -33,8 +33,8 @@ This Postharvest appallows a user to look up information on various fruit and ve
 - **ensureAdmin**: Middleware to use when they be logged in as an admin user. If not, raises Unauthorized error
 - **ensureCorrectUserOrAdmin**:  Middleware to use when they must provide a valid token & be user matching username provided as route param. If not, raises Unauthorized error.
 
- ### Data model
- ## Schema
+ ## Data model
+ ### Schema
 ![Screenshot](Postharvest-App-Schema.png)
  #### User
  - **authenticate**: authenticate user with username, password. Returns { username, first_name, last_name, email, is_admin }. Throws UnauthorizedError is user not found or wrong password.
