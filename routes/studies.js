@@ -41,6 +41,25 @@ router.post('/', ensureAdmin, async function(req, res, next) {
 	}
 });
 
+/** GET /=> {studies}
+ * 
+ * Pass in a study id in req.params
+ *
+ *  Returns  {
+        studies:[ {id, title, date, source, objective
+      }]
+ *
+
+ **/
+
+router.get('/', ensureAdmin, async function(req, res, next) {
+	try {
+		const studies = await WindhamStudies.getAll();
+		return res.json({ studies });
+	} catch (e) {
+		next(e);
+	}
+});
 /** GET /[studyId] => {study}
  * 
  * Pass in a study id in req.params
@@ -52,7 +71,7 @@ router.post('/', ensureAdmin, async function(req, res, next) {
 
  **/
 
-router.get('/:id', async function(req, res, next) {
+router.get('/:id', ensureAdmin, async function(req, res, next) {
 	try {
 		const id = req.params.id;
 		const study = await WindhamStudies.getById(id);

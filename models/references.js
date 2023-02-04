@@ -53,15 +53,16 @@ class References {
 		}
 	}
 
-	static async remove(commodityId) {
+	static async remove(commodityId, source) {
 		const querySql = `DELETE
 		FROM refs
-		WHERE commodity_id = $1
+		WHERE commodity_id = $1 AND source = $2
 		`;
 
 		try {
 			const result = await db.query(querySql, [
-				commodityId
+				commodityId,
+				source
 			]);
 
 			if (result.rowCount === 0) {

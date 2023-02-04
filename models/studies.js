@@ -4,6 +4,7 @@ const db = require('../db');
 const { NotFoundError } = require('../expressError');
 const { sqlForPartialUpdate } = require('../helpers/sql');
 const { ExpressError } = require('../expressError');
+const Commodity = require('./commodity');
 
 class WindhamStudies {
 	// Create windham study (from data), update db, return new windham study data.
@@ -42,6 +43,18 @@ class WindhamStudies {
 	  * Throws NotFoundError if study not found.
 	   **/
 
+	static async getAll() {
+		const res = await db.query(`SELECT title, date, source, objective, id FROM windham_studies ORDER BY date;`);
+
+		return res.rows;
+	}
+	/** Given an id, return study data.
+   *
+	  * Returns { id, title, date, objective }
+
+	  * Throws NotFoundError if study not found.
+	   **/
+
 	static async getById(id) {
 		const res = await db.query(
 			`SELECT title, date, source, objective, id FROM windham_studies  WHERE id = $1 ORDER BY date;`,
@@ -53,7 +66,39 @@ class WindhamStudies {
 			throw new NotFoundError(`Could not find study data with id: ${id}`);
 		}
 
-		return res.rows[0];
+		const study = res.rows[0];
+
+		const commodityIds = await db.query(
+			`SELECT commodity_id AS "commodityId" FROM windham_studies_commodities  WHERE study_id = $1;`,
+			[
+				id
+			]
+		);
+
+		const commodities = [];
+
+		async function getCommodities() {
+			for (let id of commodityIds.rows) {
+				console.log(id.commodityId);
+				let commodity = await db.query(
+					`SELECT  commodity_name AS
+					"commodityName", variety
+					FROM commodities
+				   WHERE id = $1`,
+					[
+						id.commodityId
+					]
+				);
+
+				commodities.push({ ...commodity.rows[0], id: id.commodityId });
+			}
+		}
+
+		await getCommodities();
+
+		study.commodities = commodities;
+
+		return study;
 	}
 
 	// Given an id, update windham study (from data), update db, return new windham study data.

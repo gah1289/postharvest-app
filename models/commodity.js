@@ -10,6 +10,7 @@ const ShelfLife = require('./shelfLife');
 const Temperature = require('./temperature');
 const WindhamStudiesCommodities = require('./studiesCommodities');
 const WindhamStudies = require('./studies');
+const References = require('./references');
 
 class Commodity {
 	// Create a commodity (from data), update db, return new commodity data.
@@ -110,6 +111,10 @@ class Commodity {
 		}
 
 		commodity.windhamStudies = studies || [];
+
+		const references = (await References.getByCommodity(commodity.id)) || [];
+
+		commodity.references = references;
 
 		return commodity;
 	}
