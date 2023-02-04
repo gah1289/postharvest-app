@@ -28,18 +28,23 @@ CREATE TABLE "public"."ethylene_sensitivity" (
     CONSTRAINT "ethylene_sensitivity_commodity_id_fkey" FOREIGN KEY ("commodity_id") REFERENCES "public"."commodities"("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS "public"."references";
+DROP TABLE IF EXISTS "public"."refs";
+-- This script only contains the table creation statements and does not fully represent the table in the database. It's still missing: indices, triggers. Do not use it as a backup.
 
-CREATE TABLE "public"."references" (
+-- Table Definition
+CREATE TABLE "public"."refs" (
     "commodity_id" varchar NOT NULL,
     "source" text NOT NULL,
     CONSTRAINT "references_commodity_id_fkey" FOREIGN KEY ("commodity_id") REFERENCES "public"."commodities"("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS "public"."respiration_rates";
+-- This script only contains the table creation statements and does not fully represent the table in the database. It's still missing: indices, triggers. Do not use it as a backup.
 
+-- Sequence and defined type
 CREATE SEQUENCE IF NOT EXISTS respiration_rates_id_seq;
 
+-- Table Definition
 CREATE TABLE "public"."respiration_rates" (
     "commodity_id" text,
     "temperature_celsius" numeric,
@@ -50,11 +55,14 @@ CREATE TABLE "public"."respiration_rates" (
 );
 
 DROP TABLE IF EXISTS "public"."shelf_life";
+-- This script only contains the table creation statements and does not fully represent the table in the database. It's still missing: indices, triggers. Do not use it as a backup.
 
+-- Sequence and defined type
 CREATE SEQUENCE IF NOT EXISTS shelf_life_id_seq;
 
+-- Table Definition
 CREATE TABLE "public"."shelf_life" (
-    "commodity_id" text,
+    "commodity_id" text NOT NULL,
     "temperature_celsius" numeric,
     "shelf_life" text,
     "packaging" text,
@@ -64,9 +72,12 @@ CREATE TABLE "public"."shelf_life" (
 );
 
 DROP TABLE IF EXISTS "public"."temperature_recommendations";
+-- This script only contains the table creation statements and does not fully represent the table in the database. It's still missing: indices, triggers. Do not use it as a backup.
 
+-- Sequence and defined type
 CREATE SEQUENCE IF NOT EXISTS temperature_recommendations_id_seq;
 
+-- Table Definition
 CREATE TABLE "public"."temperature_recommendations" (
     "commodity_id" text NOT NULL,
     "min_temp_celsius" text,
@@ -78,7 +89,9 @@ CREATE TABLE "public"."temperature_recommendations" (
 );
 
 DROP TABLE IF EXISTS "public"."users";
+-- This script only contains the table creation statements and does not fully represent the table in the database. It's still missing: indices, triggers. Do not use it as a backup.
 
+-- Table Definition
 CREATE TABLE "public"."users" (
     "username" varchar(25) NOT NULL,
     "password" text NOT NULL,
@@ -91,20 +104,25 @@ CREATE TABLE "public"."users" (
 );
 
 DROP TABLE IF EXISTS "public"."windham_studies";
+-- This script only contains the table creation statements and does not fully represent the table in the database. It's still missing: indices, triggers. Do not use it as a backup.
 
+-- Sequence and defined type
 CREATE SEQUENCE IF NOT EXISTS windham_studies_id_seq;
 
+-- Table Definition
 CREATE TABLE "public"."windham_studies" (
     "title" text NOT NULL,
-    "date" text,
     "source" text,
     "objective" text,
     "id" int4 NOT NULL DEFAULT nextval('windham_studies_id_seq'::regclass),
+    "date" date,
     PRIMARY KEY ("id")
 );
 
 DROP TABLE IF EXISTS "public"."windham_studies_commodities";
+-- This script only contains the table creation statements and does not fully represent the table in the database. It's still missing: indices, triggers. Do not use it as a backup.
 
+-- Table Definition
 CREATE TABLE "public"."windham_studies_commodities" (
     "study_id" int4,
     "commodity_id" text,
@@ -139,11 +157,11 @@ INSERT INTO "public"."ethylene_sensitivity" ("commodity_id", "temperature", "c2h
 ('LET-BIB', '20', '<10', 'Ethylene Sensitive', 5),
 ('APP-HON', '20', '13-20', 'Ethylene Producer', 6);
 
-INSERT INTO "public"."references" ("commodity_id", "source") VALUES
+INSERT INTO "public"."refs" ("commodity_id", "source") VALUES
 ('ASP-GRN', 'https://postharvest.ucdavis.edu/Commodity_Resources/Fact_Sheets/Datastores/Vegetables_English/?uid=2&ds=799');
-INSERT INTO "public"."references" ("commodity_id", "source") VALUES
+INSERT INTO "public"."refs" ("commodity_id", "source") VALUES
 ('LET-ROM', 'https://postharvest.ucdavis.edu/Commodity_Resources/Fact_Sheets/Datastores/Vegetables_English/?uid=20&ds=799');
-INSERT INTO "public"."references" ("commodity_id", "source") VALUES
+INSERT INTO "public"."refs" ("commodity_id", "source") VALUES
 ('AVO-HAS', 'https://postharvest.ucdavis.edu/Commodity_Resources/Fact_Sheets/Datastores/Fruit_English/?uid=8&ds=798');
 
 INSERT INTO "public"."respiration_rates" ("commodity_id", "temperature_celsius", "rr_mg_kg_hr", "rr_class", "id") VALUES
@@ -192,23 +210,24 @@ INSERT INTO "public"."temperature_recommendations" ("commodity_id", "min_temp_ce
 ('APP-HON', '0', '3', NULL, '90-95%', 5);
 
 INSERT INTO "public"."users" ("username", "password", "first_name", "last_name", "email", "job_title", "is_admin") VALUES
-('gah1289', '$2b$12$AZH7virni5jlTTiGgEg4zu3lSvAw68qVEfSIOjJ3RqtbJbdW/Oi5q', 'Gabriela', 'McCarthy', 'gah1289@gmail.com', 'Postharvest Specialist', 't');
-INSERT INTO "public"."users" ("username", "password", "first_name", "last_name", "email", "job_title", "is_admin") VALUES
 ('evm', '$2b$12$AZH7virni5jlTTiGgEg4zu3lSvAw68qVEfSIOjJ3RqtbJbdW/Oi5q', 'Liz', 'Marston', 'evmarston@windhampkg.com', 'Owner', 't');
+INSERT INTO "public"."users" ("username", "password", "first_name", "last_name", "email", "job_title", "is_admin") VALUES
+('casey', '$2b$12$gwwIsC/g8NTHVnAD4rujx.ymbh5or4CaydUfNHip9WGLWn8pO3SPu', 'Casey', 'LaCourse', 'caseylacourse@gmail.com', 'Engineer', 'f');
+INSERT INTO "public"."users" ("username", "password", "first_name", "last_name", "email", "job_title", "is_admin") VALUES
+('gah1289', '$2b$12$AZH7virni5jlTTiGgEg4zu3lSvAw68qVEfSIOjJ3RqtbJbdW/Oi5q', 'Gabriela', 'McCarthy', 'gah1289@gmail.com', 'Postharvest Specialist', 't');
 
-
-INSERT INTO "public"."windham_studies" ("title", "date", "source", "objective", "id") VALUES
-('Miami Agro Kroger Asparagus Study', '10/23/2018', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/asparagus/Kroger Miami Agro Asparagus Study.pdf', 'The purpose of the trial was to determine if: Windham Packaging bags with lower O2 flux rates would extend asparagus shelf life after being stored in room temperature for 3 days; and if spraying the asparagus with water would keep the tips from drying out', 1);
-INSERT INTO "public"."windham_studies" ("title", "date", "source", "objective", "id") VALUES
-('Springworks Peel/Reseal Lidding Film Study', '01/11/2023', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/leafy-greens/romaine/Springworks Study 2023 01 - FINAL.pptx', 'The objective of the study was to test Windham Packaging resealable lidding films on Springworks products to determine if increased perforation patterns would help decrease condensation within the package. 
-', 2);
-INSERT INTO "public"."windham_studies" ("title", "date", "source", "objective", "id") VALUES
-('Springworks OTR 3 Study', '03/07/2019', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/leafy-greens/romaine/Springworks Study 3 FINAL.pptx', 'To test the shelf life of Springworks romaine packaged at a higher OTR rate (OTR 3)', 3);
-INSERT INTO "public"."windham_studies" ("title", "date", "source", "objective", "id") VALUES
-('Springworks OTR 1 and OTR 2 Study', '02/07/2019', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/leafy-greens/romaine/Springworks Study 2019 02 07 FINAL.pptx', 'To test the shelf life of Springworks romaine at OTR 1 and OTR 2', 4),
-('Springworks Farm Preliminary Study', '01/16/2019', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/leafy-greens/romaine/Springworks Study 2019 01 16 FINAL.pptx', 'To determine whether Windham Packaging MAP (Modified Atmosphere Packaging) will extend the shelf life of Springworks Farm baby romaine and green leaf heads.  The goal is to retain romaine and green leaf quality for up to 17 days at a realistic temperature regime.', 5),
-('Avocado Preliminary Study', '10/24/2017', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/avocado/Avocado Preliminary Shelf Life Study Windham Packaging.pdf', 'To test hydro-sure packaging on avocados compared to control hot-needle perforated bags', 6),
-('Fruitripe Avocado Study', '05/24/2018', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/avocado/Fruitripe Avocado Shelf Life Study.pptx', 'To compare the shelf life of Fruitripe avocados in control (netted), hydro-sure, and laminate MAP pouches', 7);
+INSERT INTO "public"."windham_studies" ("title", "source", "objective", "id", "date") VALUES
+('Miami Agro Kroger Asparagus Study', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/asparagus/Kroger Miami Agro Asparagus Study.pdf', 'The purpose of the trial was to determine if: Windham Packaging bags with lower O2 flux rates would extend asparagus shelf life after being stored in room temperature for 3 days; and if spraying the asparagus with water would keep the tips from drying out', 1, '2018-10-23');
+INSERT INTO "public"."windham_studies" ("title", "source", "objective", "id", "date") VALUES
+('Springworks Peel/Reseal Lidding Film Study', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/leafy-greens/romaine/Springworks Study 2023 01 - FINAL.pptx', 'The objective of the study was to test Windham Packaging resealable lidding films on Springworks products to determine if increased perforation patterns would help decrease condensation within the package. 
+', 2, '2023-01-11');
+INSERT INTO "public"."windham_studies" ("title", "source", "objective", "id", "date") VALUES
+('Springworks OTR 3 Study', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/leafy-greens/romaine/Springworks Study 3 FINAL.pptx', 'To test the shelf life of Springworks romaine packaged at a higher OTR rate (OTR 3)', 3, '2019-03-07');
+INSERT INTO "public"."windham_studies" ("title", "source", "objective", "id", "date") VALUES
+('Springworks OTR 1 and OTR 2 Study', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/leafy-greens/romaine/Springworks Study 2019 02 07 FINAL.pptx', 'To test the shelf life of Springworks romaine at OTR 1 and OTR 2', 4, '2019-02-07'),
+('Springworks Farm Preliminary Study', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/leafy-greens/romaine/Springworks Study 2019 01 16 FINAL.pptx', 'To determine whether Windham Packaging MAP (Modified Atmosphere Packaging) will extend the shelf life of Springworks Farm baby romaine and green leaf heads.  The goal is to retain romaine and green leaf quality for up to 17 days at a realistic temperature regime.', 5, '2019-01-16'),
+('Avocado Preliminary Study', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/avocado/Avocado Preliminary Shelf Life Study Windham Packaging.pdf', 'To test hydro-sure packaging on avocados compared to control hot-needle perforated bags', 6, '2017-10-24'),
+('Fruitripe Avocado Study', '/home/gah1289/springboard_assignments/50-capstone-two/postharvest-app-backend/windham-studies/avocado/Fruitripe Avocado Shelf Life Study.pptx', 'To compare the shelf life of Fruitripe avocados in control (netted), hydro-sure, and laminate MAP pouches', 7, '2018-05-24');
 
 INSERT INTO "public"."windham_studies_commodities" ("study_id", "commodity_id") VALUES
 (1, 'ASP-GRN');

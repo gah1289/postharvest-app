@@ -67,13 +67,11 @@ class ShelfLife {
 	static async getByCommodity(commodityId) {
 		try {
 			const res = await db.query(
-				`SELECT id, commodity_id AS "commodityId", temperature_celsius AS "temperature", shelf_life AS "shelfLife", packaging, description FROM shelf_life   WHERE commodity_id = $1  `,
+				`SELECT id, commodity_id AS "commodityId", temperature_celsius AS "temperature", shelf_life AS "shelfLife", packaging, description FROM shelf_life   WHERE commodity_id = $1 ORDER BY temperature_celsius  `,
 				[
 					commodityId
 				]
 			);
-
-			console.log({ res });
 
 			return res.rows;
 		} catch (e) {

@@ -43,9 +43,12 @@ class WindhamStudies {
 	   **/
 
 	static async getById(id) {
-		const res = await db.query(`SELECT * FROM windham_studies  WHERE id = $1 `, [
-			id
-		]);
+		const res = await db.query(
+			`SELECT title, date, source, objective, id FROM windham_studies  WHERE id = $1 ORDER BY date;`,
+			[
+				id
+			]
+		);
 		if (res.rows.length === 0) {
 			throw new NotFoundError(`Could not find study data with id: ${id}`);
 		}

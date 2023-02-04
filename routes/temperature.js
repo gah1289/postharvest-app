@@ -115,6 +115,7 @@ router.patch('/:id', ensureAdmin, async function(req, res, next) {
 			throw new BadRequestError(errs);
 		}
 		const temperature = await Temperature.update(req.params.id, req.body);
+
 		return res.json({ temperature });
 	} catch (err) {
 		next(err);

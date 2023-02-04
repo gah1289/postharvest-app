@@ -11,7 +11,6 @@ class WindhamStudiesCommodities {
 	// Returns {commodityId, studyId}
 
 	static async create(data) {
-		console.log({ data });
 		const { studyId, commodityId } = data;
 
 		if (!studyId) {

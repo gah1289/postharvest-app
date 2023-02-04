@@ -68,7 +68,7 @@ class Temperature {
 	static async getByCommodity(commodityId) {
 		try {
 			const res = await db.query(
-				`SELECT id, commodity_id AS "commodityId", min_temp_celsius AS "minTemp", optimum_temp_celsius AS "optimumTemp", description, rh FROM temperature_recommendations   WHERE commodity_id = $1  `,
+				`SELECT id, commodity_id AS "commodityId", min_temp_celsius AS "minTemp", optimum_temp_celsius AS "optimumTemp", description, rh FROM temperature_recommendations   WHERE commodity_id = $1 ORDER BY min_temp_celsius `,
 				[
 					commodityId
 				]
@@ -87,6 +87,7 @@ class Temperature {
 	// Temperature is in celsius
 
 	static async update(id, data) {
+		console.log(id, data);
 		const { setCols, values } = sqlForPartialUpdate(data, {
 			commodityId : 'commodity_id',
 			minTemp     : 'min_temp_celsius',

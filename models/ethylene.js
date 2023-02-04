@@ -67,7 +67,7 @@ class Ethylene {
 	static async getByCommodity(commodityId) {
 		try {
 			const ethyleneRes = await db.query(
-				`SELECT id, commodity_id AS "commodityId",  c2h4_production AS "c2h4Production", c2h4_class AS "c2h4Class", temperature FROM ethylene_sensitivity  WHERE commodity_id = $1 `,
+				`SELECT id, commodity_id AS "commodityId",  c2h4_production AS "c2h4Production", c2h4_class AS "c2h4Class", temperature FROM ethylene_sensitivity  WHERE commodity_id = $1 ORDER BY temperature`,
 				[
 					commodityId
 				]
