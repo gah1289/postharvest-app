@@ -50,15 +50,30 @@ class Commodity {
    * Returns [{ commodityName, variety, scientificName, coolingMethod, climacteric }, ...]
    **/
 
-	static async findAll() {
-		const result = await db.query(
-			`SELECT id,commodity_name AS
-	            "commodityName", variety,
-	            scientific_name AS "scientificName", cooling_method AS "coolingMethod",
-	            climacteric
-	           FROM commodities
-	           ORDER BY commodity_name`
-		);
+	static async findAll(searchFilters = {}) {
+		let query = `SELECT id,commodity_name AS
+		"commodityName", variety,
+		scientific_name AS "scientificName", cooling_method AS "coolingMethod",
+		climacteric
+	   FROM commodities
+	   `;
+		let whereExpressions = [];
+		let queryValues = [];
+
+		const { commodityName } = searchFilters;
+
+		if (commodityName) {
+			queryValues.push(`%${commodityName}%`);
+			whereExpressions.push(`commodity_name ILIKE $${queryValues.length}`);
+		}
+
+		if (whereExpressions.length > 0) {
+			query += `WHERE ` + whereExpressions.join(' AND ');
+		}
+
+		query += ' ORDER BY commodity_name';
+
+		const result = await db.query(query, queryValues);
 
 		return result.rows;
 	}
@@ -128,13 +143,14 @@ class Commodity {
 
 		const querySql = `UPDATE commodities 
                       SET ${setCols} 
-                      WHERE id = ${id} 
+                      WHERE id = '${id}' 
                       RETURNING id, commodity_name AS "commodityName", variety, scientific_name AS "scientificName", cooling_method AS "coolingMethod", climacteric`;
 
 		try {
 			const result = await db.query(querySql, [
 				...values
 			]);
+
 			const commodity = result.rows[0];
 			return commodity;
 		} catch (e) {

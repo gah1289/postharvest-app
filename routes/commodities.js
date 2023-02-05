@@ -50,7 +50,9 @@ router.post('/', ensureAdmin, async function(req, res, next) {
 
 router.get('/', async function(req, res, next) {
 	try {
-		const commodities = await Commodity.findAll();
+		const searchFilters = req.query;
+
+		const commodities = await Commodity.findAll({ ...searchFilters });
 		return res.json({ commodities });
 	} catch (err) {
 		return next(err);

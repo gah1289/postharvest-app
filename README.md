@@ -24,6 +24,7 @@ This Postharvest appallows a user to look up information on various fruit and ve
 #### /temperature
 #### /refs
 #### /studies
+- **DELETE /studies/study**: /[studyId] Delete all entries with studyId from windham_studies_commodities. Authorization required: admin
 
 ### Middleware
 - Uses *morgan*, HTTP request logger middleware for node.js
@@ -43,6 +44,8 @@ This Postharvest appallows a user to look up information on various fruit and ve
  - **get**: Given a username, return data about user. Returns { username, first_name, last_name, is_admin, jobTitle, email }. Throws NotFoundError if user not found.
  - **update**:  Update user data with `data`. This is a "partial update" --- it's fine if data doesn't contain all the fields; this only changes provided ones. Data can include: { firstName, lastName, password, email, isAdmin, jobTitle }. Returns { username, firstName, lastName, email, jobTitle, isAdmin } *WARNING: this function can set a new password or make a user an admin.*
  - **remove**: Delete given user from database; returns undefined.
+
+
 
 ## API
 - I made my own API using the research I have done as a Postharvest Specialist as well as the UC Davis Postharvest Database and USDA Handbook 66.

@@ -172,4 +172,16 @@ router.get('/study/:id', ensureAdmin, async function(req, res, next) {
 	}
 });
 
+// Delete all entries with studyId from windham_studies_commodities
+
+router.delete('/study/:id', ensureAdmin, async function(req, res, next) {
+	try {
+		const studyId = req.params.id;
+		await WindhamStudiesCommodities.remove(studyId);
+		return res.status(200).json({ msg: `deleted all entries for study: ${studyId}` });
+	} catch (err) {
+		return next(err);
+	}
+});
+
 module.exports = router;

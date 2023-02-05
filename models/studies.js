@@ -44,7 +44,9 @@ class WindhamStudies {
 	   **/
 
 	static async getAll() {
-		const res = await db.query(`SELECT title, date, source, objective, id FROM windham_studies ORDER BY date;`);
+		const res = await db.query(
+			`SELECT title, date, source, objective, id FROM windham_studies ORDER BY date DESC;`
+		);
 
 		return res.rows;
 	}
@@ -57,7 +59,7 @@ class WindhamStudies {
 
 	static async getById(id) {
 		const res = await db.query(
-			`SELECT title, date, source, objective, id FROM windham_studies  WHERE id = $1 ORDER BY date;`,
+			`SELECT title, date, source, objective, id FROM windham_studies  WHERE id = $1 ORDER BY date DESC;`,
 			[
 				id
 			]
@@ -79,7 +81,6 @@ class WindhamStudies {
 
 		async function getCommodities() {
 			for (let id of commodityIds.rows) {
-				console.log(id.commodityId);
 				let commodity = await db.query(
 					`SELECT  commodity_name AS
 					"commodityName", variety
@@ -141,6 +142,7 @@ class WindhamStudies {
 			if (result.rowCount === 0) {
 				throw new NotFoundError(`Could not find id to delete: ${id}`);
 			}
+
 			return `Removed Windham Packaging study: ${id}`;
 		} catch (e) {
 			throw new NotFoundError(`Could not find id to delete: ${id}`);

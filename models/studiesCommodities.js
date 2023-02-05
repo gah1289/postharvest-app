@@ -108,23 +108,23 @@ class WindhamStudiesCommodities {
 	// Given an id, remove windham study data.
 	// Returns "deleted" message
 
-	static async remove(id) {
+	static async remove(studyId) {
 		const querySql = `DELETE
-		FROM windham_studies
-		WHERE id = $1
+		FROM windham_studies_commodities
+		WHERE study_id = $1
 		`;
 
 		try {
 			const result = await db.query(querySql, [
-				id
+				studyId
 			]);
 
 			if (result.rowCount === 0) {
-				throw new NotFoundError(`Could not find id to delete: ${id}`);
+				throw new NotFoundError(`Could not find id to delete: ${studyId}`);
 			}
-			return `Removed Windham Packaging study: ${id}`;
+			return `Removed Windham Packaging study: ${studyId}`;
 		} catch (e) {
-			throw new NotFoundError(`Could not find id to delete: ${id}`);
+			throw new NotFoundError(`Could not find id to delete: ${studyId}`);
 		}
 	}
 }

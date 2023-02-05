@@ -10,7 +10,6 @@ class Ethylene {
 	// Returns {commodityId, temperature, c2h4Production, c2h4Class}
 
 	static async create(commodityId, data) {
-		console.log('ADD', commodityId, data);
 		try {
 			const result = await db.query(
 				`INSERT INTO ethylene_sensitivity (commodity_id,
@@ -28,7 +27,7 @@ class Ethylene {
 			);
 
 			let ethyleneSensitivity = result.rows[0];
-			console.log(ethyleneSensitivity);
+
 			return ethyleneSensitivity;
 		} catch (e) {
 			throw new NotFoundError(`Commodity id:${commodityId} not found`);
@@ -87,7 +86,6 @@ class Ethylene {
 	// Returns { commodityId, temperature, c2h4Production, c2h4Class, id }
 
 	static async update(id, data) {
-		console.log(id, data);
 		const { setCols, values } = sqlForPartialUpdate(data, {
 			commodityId    : 'commodity_id',
 			c2h4Production : 'c2h4_production',
@@ -104,8 +102,6 @@ class Ethylene {
 			const result = await db.query(querySql, [
 				...values
 			]);
-
-			console.log('RESULT', result.rows);
 
 			return result.rows[0];
 		} catch (e) {
