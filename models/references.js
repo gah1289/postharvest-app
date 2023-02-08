@@ -65,7 +65,7 @@ class References {
 				source
 			]);
 
-			if (result.rowCount === 0) {
+			if (result.rows.length === 0) {
 				throw new NotFoundError(`Could not find commodity to delete: ${commodityId}`);
 			}
 			return `Removed reference data for commodity: ${commodityId}`;

@@ -180,7 +180,8 @@ describe('PATCH /commodities/:id', () => {
 
 describe('DELETE /commodities/:id', function() {
 	test('works for admin', async function() {
-		const resp = await request(app).delete(`/commodities/id`).set('authorization', `Bearer ${adminToken}`);
+		const resp = await request(app).delete(`/commodities/id`).send({}).set('authorization', `Bearer ${adminToken}`);
+
 		expect(resp.body).toEqual({ deleted: 'id' });
 	});
 

@@ -75,7 +75,9 @@ router.get('/commodity/:id', async function(req, res, next) {
 router.delete('/:id', ensureAdmin, async function(req, res, next) {
 	try {
 		const source = req.body.source;
-		await References.remove(req.params.id, source);
+
+		const res = await References.remove(req.params.id, source);
+
 		return res.json({ deleted: req.params.id });
 	} catch (err) {
 		return next(err);

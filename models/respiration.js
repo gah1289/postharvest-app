@@ -68,7 +68,7 @@ class Respiration {
 	static async getByCommodity(commodityId) {
 		try {
 			const respirationRes = await db.query(
-				`SELECT id, commodity_id AS "commodityId", temperature_celsius AS "temperature", rr_mg_kg_hr AS "rrRate", rr_class AS "rrClass" FROM respiration_rates  WHERE commodity_id = $1  `,
+				`SELECT id, commodity_id AS "commodityId", temperature_celsius AS "temperature", rr_mg_kg_hr AS "rrRate", rr_class AS "rrClass" FROM respiration_rates  WHERE commodity_id = $1  ORDER BY temperature_celsius`,
 				[
 					commodityId
 				]

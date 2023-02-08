@@ -75,13 +75,18 @@ describe('GET /studies/:id', function() {
 		expect(resp.statusCode).toEqual(201);
 		const studyId = resp.body.study.id;
 
-		const studyRes = await request(app).get(`/studies/${studyId}`);
+		const studyRes = await request(app).get(`/studies/${studyId}`).set('authorization', `Bearer ${adminToken}`);
+
 		expect(studyRes.body.study.title).toEqual('Another Study');
 	});
 	test('throws error with bad id', async function() {
-		const resp = await request(app).get(`/studies/000`);
+		const resp = await request(app).get(`/studies/000`).set('authorization', `Bearer ${adminToken}`);
 		expect(resp.status).toBe(404);
 		expect(resp.body.error.message).toBe('Could not find study data with id: 000');
+	});
+	test('unauth for user', async function() {
+		const resp = await request(app).get(`/studies/id`).set('authorization', `Bearer ${u1Token}`);
+		expect(resp.status).toBe(401);
 	});
 });
 

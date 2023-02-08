@@ -56,14 +56,14 @@ describe('getByCommodity', function() {
 describe('remove', function() {
 	test('works', async function() {
 		await References.create('id', {
-			source : 'some othher website'
+			source : 'some other website'
 		});
 
 		const get = await References.getByCommodity('id');
 
 		expect(get.length).toEqual(2);
 
-		const deleted = await References.remove('id');
+		const deleted = await References.remove('id', 'some other website');
 
 		expect(deleted).toEqual('Removed reference data for commodity: id');
 		const getAfterDelete = await References.getByCommodity('id');

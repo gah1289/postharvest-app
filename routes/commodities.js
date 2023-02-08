@@ -94,6 +94,7 @@ router.patch('/:id', ensureAdmin, async function(req, res, next) {
 			throw new BadRequestError(errs);
 		}
 		const commodity = await Commodity.update(req.params.id, req.body);
+		if (!commodity) throw new NotFoundError();
 		return res.json({ commodity });
 	} catch (err) {
 		next(err);

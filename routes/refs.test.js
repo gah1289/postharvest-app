@@ -111,7 +111,10 @@ describe('GET /ref/commodity/:id', function() {
 
 describe('DELETE /ref/:id', function() {
 	test('works for admin', async function() {
-		const resp = await request(app).delete(`/ref/id`).set('authorization', `Bearer ${adminToken}`);
+		const resp = await request(app)
+			.delete(`/ref/id`)
+			.send({ source: 'some website' })
+			.set('authorization', `Bearer ${adminToken}`);
 		expect(typeof resp.body.deleted).toBe('string');
 	});
 

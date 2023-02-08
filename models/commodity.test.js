@@ -62,7 +62,7 @@ describe('findAll', function() {
 	});
 });
 
-// // /************************************** get */
+// /************************************** get */
 
 describe('get', function() {
 	test('works', async function() {
