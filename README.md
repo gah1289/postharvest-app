@@ -160,13 +160,6 @@ Throws NotFoundError if commodity not found.
 - **remove**: Given a commodityId and a source, removes reference.
 
 
-## API
-- I made my own API using the research I have done as a Postharvest Specialist as well as the UC Davis Postharvest Database and USDA Handbook 66.
-- https://postharvest.ucdavis.edu/Commodity_Resources/Fact_Sheets/
-- https://www.ars.usda.gov/arsuserfiles/oc/np/commercialstorage/commercialstorage.pdf
-
-
-
 ## Tech Stack
 - Node.js
 - PostgresQL
