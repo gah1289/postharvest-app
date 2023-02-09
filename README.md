@@ -164,6 +164,7 @@ Throws NotFoundError if commodity not found.
 - Node.js
 - PostgresQL
 - Express
+- AWS S3 for storage of Windham Studies
 
 ## Testing
 - Jest
