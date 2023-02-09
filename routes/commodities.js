@@ -62,9 +62,9 @@ router.get('/', async function(req, res, next) {
 /** GET /[id] => { commodity }
  *
  * Returns { commodity: [ {commodityName, variety, scientificName, coolingMethod, climacteric }, ... ] }
- *   where ethyleneSensitivity is { commodityId, temperature, c2h4Production, c2h4Class }
+ *   
  *
- * Authorization required: logged in
+ * Authorization required: none
  **/
 
 router.get('/:id', async function(req, res, next) {

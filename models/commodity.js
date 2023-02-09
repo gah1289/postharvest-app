@@ -78,13 +78,19 @@ class Commodity {
 		return result.rows;
 	}
 
-	// 	/** Given a commodity id, return data about commodity.
-	//    *
-	//    * Returns { commodityName, variety, scientificName, coolingMethod, climacteric }
-	//    *   where jobs is { id, title, company_handle, company_name, state }
-	//    *
-	//    * Throws NotFoundError if commodity not found.
-	//    **/
+	/** Given a commodity id, return data about commodity.
+	   *
+	   * Returns { commodityName, variety, scientificName, coolingMethod, climacteric }
+				where ethyleneSensitivity is [...{ id, commodityId, c2h4Productiom, c2h4Class, temperature  }]
+				where respirationRate is [...{id, commodityId, rrRate, rrClass, temperature}]
+				where shelfLife is [...{id, commodityId, temperature, shelfLife, packaging, descrpiption}]
+				where temperatureRecommendations is [...{id, commodityId, minTemp, optimumTemp, description, rh}]
+				where studies is [...{id, title, date, source, objective}]
+				where refs is [...{commodityId, source}]
+
+	   *
+	   * Throws NotFoundError if commodity not found.
+	   **/
 
 	static async get(id) {
 		const commodityRes = await db.query(
@@ -134,6 +140,8 @@ class Commodity {
 		return commodity;
 	}
 
+	// Given a commodity id and data, updates a commodity
+
 	static async update(id, data) {
 		const { setCols, values } = sqlForPartialUpdate(data, {
 			commodityName  : 'commodity_name',
@@ -157,6 +165,8 @@ class Commodity {
 			throw new NotFoundError(`No commodity: ${id}`);
 		}
 	}
+
+	// removes commodity by id
 
 	static async remove(id) {
 		const querySql = `DELETE

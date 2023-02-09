@@ -69,7 +69,7 @@ router.get('/:id', async function(req, res, next) {
 	}
 });
 
-/** GET /[commodityId] => [...{ ethylene }]
+/** GET ethylene/commodity/[commodityId] => [...{ ethylene }]
  *
  *  Returns{
         ethylene: [
@@ -83,7 +83,7 @@ router.get('/:id', async function(req, res, next) {
         ]
       }
  *
-
+Authorization required: none
  **/
 
 router.get('/commodity/:id', async function(req, res, next) {

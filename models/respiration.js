@@ -59,10 +59,10 @@ class Respiration {
 	}
 
 	/** Given a commodity id, return all respiration rate data about commodity.
-	   *
-	   * Returns [...{ id, commodityId, temperature, rrRate, rrClass }]
+	   
+	   Returns [...{ id, commodityId, temperature, rrRate, rrClass }]
 
-	   * Throws NotFoundError if commodity not found.
+	    Throws NotFoundError if commodity not found.
 	   **/
 
 	static async getByCommodity(commodityId) {
@@ -82,11 +82,11 @@ class Respiration {
 		}
 	}
 
-	// // Given an id, return new respiration rate data.
-	// Data should be {commodityId, temperature, rrRate, rrClass}
-	// Returns {id, commodityId, temperature, rrRate, rrClass}
-	// Respiration rate is in units mm*kg*hr
-	// Temperature is in celsius
+	/**Given an id, return new respiration rate data.
+	Data should be {commodityId, temperature, rrRate, rrClass}
+	Returns {id, commodityId, temperature, rrRate, rrClass}
+	Respiration rate is in units mm*kg*hr
+	Temperature is in celsius**/
 
 	static async update(id, data) {
 		const { setCols, values } = sqlForPartialUpdate(data, {

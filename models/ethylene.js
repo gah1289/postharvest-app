@@ -34,7 +34,7 @@ class Ethylene {
 		}
 	}
 
-	/** Given an id, return ethylene sensitivty data.
+	/** Given an id, return ethylene sensitivity data.
    *
 	  * Returns { commodityId, temperature, c2h4Production, c2h4Class, id }
 

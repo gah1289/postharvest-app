@@ -32,12 +32,12 @@ class References {
 		}
 	}
 
-	// // 	/** Given a commodity id, return all reference data about commodity.
-	// //    *
-	// //    * Returns [...{ commodityId, source }]
+	/** Given a commodity id, return all reference data about commodity.
+	   *
+	   * Returns [...{ commodityId, source }]
 
-	// //    * Throws NotFoundError if commodity not found.
-	// //    **/
+	   * Throws NotFoundError if commodity not found.
+	   **/
 
 	static async getByCommodity(commodityId) {
 		try {
@@ -53,6 +53,7 @@ class References {
 		}
 	}
 
+	// Given a commodityId and a source, removes reference.
 	static async remove(commodityId, source) {
 		const querySql = `DELETE
 		FROM refs
