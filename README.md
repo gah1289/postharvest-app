@@ -1,7 +1,7 @@
 # postharvest-app-backend
 
 ## Project Summary
-This Postharvest appallows a user to look up information on various fruit and vegetable commodities. The user will be able to log in, search for commodities by name and filter by parameters such as climacteric, respiration class, and temperature category. Admins will have the ability to add and edit commodities. This app is designed for Windham Packaging, LLC, a company that provides specialized packaging for fresh produce. The admins will be myself and the owner, Dr. Elizabeth Marston. This is an evenly-focused full stack application.  
+This Postharvest app allows a user to look up information on various fruit and vegetable commodities. The user is able to log in, register, search for commodities by name and view temperature, shelf life, respiration, ethylene, and reference data. Admins can view and download Windham Packaging shelf life studies associated with each fruit or vegetable (commodity). Admins have the ability to add and edit commodities and associated information. This app is designed for Windham Packaging, LLC, a company that provides specialized packaging for fresh produce. The admins will be myself and the owner, Dr. Elizabeth Marston. This is an evenly-focused full stack application.  
 
 
 ## User Flow
@@ -174,7 +174,7 @@ Throws NotFoundError if commodity not found.
 
 ## Testing
 - Jest
-- 
+- Supertest
 
 
 
