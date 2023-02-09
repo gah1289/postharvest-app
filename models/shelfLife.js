@@ -5,7 +5,7 @@ const { NotFoundError, BadRequestError } = require('../expressError');
 const { sqlForPartialUpdate } = require('../helpers/sql');
 
 class ShelfLife {
-	// Create shelf life information (from data), update db, return new rshelf life data.
+	// Create shelf life information (from data), update db, return new shelf life data.
 	// Data should be {commodityId, temperature, shelfLife, description, packaging}
 	// Returns {id, commodityId, temperature, shelfLife, description, packaging}
 
@@ -79,7 +79,7 @@ class ShelfLife {
 		}
 	}
 
-	// // Given an id, return new shelf life data.
+	// Given an id, return new shelf life data.
 	// Data should be { commodityId, temperature, shelfLife, description, packaging}
 	// Returns {id, commodityId, temperature, shelfLife, description, packaging}
 

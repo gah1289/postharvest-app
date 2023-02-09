@@ -58,9 +58,9 @@ class Temperature {
 		return res.rows[0];
 	}
 
-	/** Given a commodity id, return all shelf life data about commodity.
+	/** Given a commodity id, return all temperature data about commodity.
 	   *
-	   * Returns [...{ id, commodityId, temperature, shelfLife, description, packaging }]
+	   * Returns [...{ id, commodityId, minTemp, optimumTemp, rh }]
 
 	   * Throws NotFoundError if commodity not found.
 	   **/
@@ -80,9 +80,9 @@ class Temperature {
 		}
 	}
 
-	// // Given an id, return new shelf life data.
-	// Data should be { commodityId, temperature, shelfLife, description, packaging}
-	// Returns {id, commodityId, temperature, shelfLife, description, packaging}
+	// Given an id, return new temperature data.
+	// Data should be {  minTemp, optimumTemp, rh}
+	// Returns {id, commodityId, minTemp, optimumTemp, rh}
 
 	// Temperature is in celsius
 

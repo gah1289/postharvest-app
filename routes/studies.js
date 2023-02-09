@@ -43,7 +43,7 @@ router.post('/', ensureAdmin, async function(req, res, next) {
 
 /** GET /=> {studies}
  * 
- * Pass in a study id in req.params
+ * Returns a list of all studies
  *
  *  Returns  {
         studies:[ {id, title, date, source, objective
@@ -81,19 +81,13 @@ router.get('/:id', ensureAdmin, async function(req, res, next) {
 	}
 });
 
-/** PATCH /[id] { temperature } => { temperature }
+/** PATCH /[id] { study } => { study }
  *
  * Data can include:
- *   { minTemp, optimumTemp, description, rh }
+ *   { title, date, objective }
  *
  * Returns  {
-       
-         temperature: 
-           {
-           id, commodityId, minTemp, optimumTemp, description, rh
-          }
-        
-        
+        study: {id, title, date, source, objective
       }
       Authorization required: admin
 
@@ -159,7 +153,7 @@ router.get('/commodity/:id', ensureAdmin, async function(req, res, next) {
 
 // GET /studies/study/:id => { studyCommodity: { commodityId, studyId } }
 
-// list all Windham studies associated with a commodity
+// list all Windham commodities associated with a study
 
 router.get('/study/:id', ensureAdmin, async function(req, res, next) {
 	try {

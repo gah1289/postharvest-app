@@ -36,9 +36,9 @@ class WindhamStudies {
 		}
 	}
 
-	/** Given an id, return study data.
+	/** Get data for all studies
    *
-	  * Returns { id, title, date, objective }
+	  * Returns [...{ id, title, date, objective }]
 
 	  * Throws NotFoundError if study not found.
 	   **/
@@ -53,6 +53,7 @@ class WindhamStudies {
 	/** Given an id, return study data.
    *
 	  * Returns { id, title, date, objective }
+	  * where commodities=[...{commodityName, variety}]
 
 	  * Throws NotFoundError if study not found.
 	   **/

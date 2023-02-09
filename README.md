@@ -35,27 +35,28 @@ ethylene: [{id: int,commodityId: str,temperature: str,c2h4Production: str,c2h4Cl
 - **PATCH /ethylene/:id**:PATCH /[id] { ethylene } => { ethylene } Data can include: { temperature: str,  c2h4Production: str, c2h4Class: str } Returns  { ethylene: { id: int, commodityId: str, temperature: str, c2h4Production: str, c2h4Class: str}} Authorization required: admin
 - **DELETE /ethylene/:id**: DELETE /[id]  =>  { deleted: id } Authorization required: admin 
 
-#### /shelfLife
-- **POST /shelf-life**: POST / { commodity }  => { commodity: {id, commodityName, variety, scientificName, coolingMethod, climacteric } Adds a new commodity. This returns the newly created commodity. Authorization required: admin
-- **GET /shelf-life**: GET / => { commodities: [ {commodityName, variety, scientificName, coolingMethod, climacteric }, ... ] } Returns list of all commodities. Authorization required: none. 
-- **GET /shelf-life/:id**: GET /[id] => { commodity } Returns { commodity: [ {commodityName, variety, scientificName, coolingMethod, climacteric, ethyleneSensitivity, respirationRate, shelfLife, references, studies, temperatureRecommendations }, ... ] }  
-- **PATCH /shelf-life/:id**:PATCH /[id] { commodity } => { commodity } Data can include: { commodityName, variety, scientificName, coolingMethod, climacteric } Returns { id, commodityName, variety, scientificName, coolingMethod, climacteric }
+#### /shelf-life
+- **POST /shelf-life**: POST / { reference }  => { reference }. Adds a new reference object. This returns the newly created shelf life data {reference: {id, commodityId, shelfLife, packaging, description} }. Authorization required: admin
+- **GET /shelf-life/:id**: GET /[shelfLifeId] => {shelfLife}. Pass in a study id in req.params. Returns  {shelfLife: { id: int, commodityId: str, shelfLife: str, packaging: str, description: str}} Authorization required: none. 
+- **GET /shelf-life/commodity/:id**: GET /[commodityId] => [...{ shelfLife }] Returns{shelfLife: [{id: 929, commodityId: 'id', shelfLife: '1 day', packaging: 'test', description: 'test'}]}
+- **PATCH /shelf-life/:id**:PATCH /[id] { shelfLife } => { shelfLife } Data can include: { shelfLife, temperature, packaging, description } Returns  {shelfLife: {id: int, commodityId: str, shelfLife: str, packaging: str, description: str}}Authorization required: admin
 - **DELETE /shelf-life/:id**: DELETE /[id]  =>  { deleted: id } Authorization required: admin 
 
 
 #### /respiration
-- **POST /respiration**: POST / { commodity }  => { commodity: {id, commodityName, variety, scientificName, coolingMethod, climacteric } Adds a new commodity. This returns the newly created commodity. Authorization required: admin
-- **GET /respiration**: GET / => { commodities: [ {commodityName, variety, scientificName, coolingMethod, climacteric }, ... ] } Returns list of all commodities. Authorization required: none. 
-- **GET /respiration/:id**: GET /[id] => { commodity } Returns { commodity: [ {commodityName, variety, scientificName, coolingMethod, climacteric, ethyleneSensitivity, respirationRate, shelfLife, references, studies, temperatureRecommendations }, ... ] }  
-- **PATCH /respiration/:id**:PATCH /[id] { commodity } => { commodity } Data can include: { commodityName, variety, scientificName, coolingMethod, climacteric } Returns { id, commodityName, variety, scientificName, coolingMethod, climacteric }
+- **POST /respiration**: PPOST / { respiration }  => { respiration }. Adds a new respiration rate object. This returns the newly created respiration rate data  {respiration: {id, commodityId, temperature, rrRate, rrClass} } Authorization required: admin
+- **GET /respiration**: GET /[respirationId] => {respiration}. Pass in a respiration id in req.params. Returns  {       respiration: {id, commodityId, temperature, rrRate, rrClass} } Authorization required: none. 
+- **GET /respiration/commodity/:id**: GET /[commodityId] => [...{ respiration }] Returns{respiration: [{id: int,commodityId: str, temperature: str, rrRate: str, rrClass: str}]}
+- **PATCH /respiration/:id**:PATCH /[id] { shelfLife } => { shelfLife }  Data can include: { temperature, rrRate, rrClass } Returns  {   respiration: {id: int, commodityId: str, temperature: str, rrRate: str, rrClass: str}} Authorization required: admin
 - **DELETE /respiration/:id**: DELETE /[id]  =>  { deleted: id } Authorization required: admin 
 
 
 #### /temperature
-- **POST /temperature**: POST / { commodity }  => { commodity: {id, commodityName, variety, scientificName, coolingMethod, climacteric } Adds a new commodity. This returns the newly created commodity. Authorization required: admin
-- **GET /temperature**: GET / => { commodities: [ {commodityName, variety, scientificName, coolingMethod, climacteric }, ... ] } Returns list of all commodities. Authorization required: none. 
-- **GET /temperature/:id**: GET /[id] => { commodity } Returns { commodity: [ {commodityName, variety, scientificName, coolingMethod, climacteric, ethyleneSensitivity, respirationRate, shelfLife, references, studies, temperatureRecommendations }, ... ] }  
-- **PATCH /temperature/:id**:PATCH /[id] { commodity } => { commodity } Data can include: { commodityName, variety, scientificName, coolingMethod, climacteric } Returns { id, commodityName, variety, scientificName, coolingMethod, climacteric }
+- **POST /temperature**: POST / { temperature }  => { temperature }. Adds a new temperature recommendation object. This returns the newly created temperature recommendation data {temperature: {id, commodityId, minTemp, optimumTemp, description, rh} }. Authorization required: admin
+- **GET /temperature/:id**: GET /[temperatureId] => {temperature}. Pass in a temperature id in req.params. Returns  {temperature: {id, commodityId, minTemp, optimumTemp, description, rh}. Authorization required: none. 
+- **POST /temperature**: POST / { temperature }  => { temperature }. Adds a new temperature recommendation object. This returns the newly created temperature recommendation data {temperature: {id, commodityId, minTemp, optimumTemp, description, rh} }. Authorization required: admin
+- **GET /temperature/commodity/:id**: GET /[commodityId] => [...{ temperature }]. Returns{temperature: [{id, commodityId,minTemp, optimumTemp, description, rh}]}Authorization required: none. 
+- **PATCH /temperature/:id**:PATCH /[id] { temperature } => { temperature }. Data can include: { minTemp, optimumTemp, description, rh } Returns  {temperature: {id, commodityId, minTemp, optimumTemp, description, rh}} Authorization required: admin
 - **DELETE /temperature/:id**: DELETE /[id]  =>  { deleted: id } Authorization required: admin 
 
 
@@ -67,7 +68,16 @@ ethylene: [{id: int,commodityId: str,temperature: str,c2h4Production: str,c2h4Cl
 
 
 #### /studies
-- **DELETE /studies/study**: /[studyId] Delete all entries with studyId from windham_studies_commodities. Authorization required: admin
+- **POST /studies**: POST / { study }  => { study }. Adds a new Windham Packaging study object. This returns the newly created study data {study: {id,  title, date, source, objective} }. Authorization required: admin. (Not implemented yet.)
+- **GET /studies**:GET /=> {studies} Authorization required: admin. Returns a list of all studies. Returns  {studies:[ {id, title, date, source, objective}] Authorization required: admin.
+- **GET /studies/:id**: GET /[studyId] => {study} Pass in a study id in req.params. Returns  {study: {id, title, date, source, objective} Authorization required: admin.
+- **PATCH /studies/:id**: PATCH /[id] { study } => { study }. Data can include { title, date, objective }. Returns  {study: {id, title, date, source, objective} Authorization required: admin.
+- **DELETE /studies/study**: /[studyId] Delete all entries with studyId from windham_studies_commodities. Authorization required: admin Authorization required: admin.
+- **POST /studies/commodity/:id**: POST /:commodityId {data: studyId, commodityId}=> { studyCommodity: { commodityId, studyId } }. Link a windham study to one or multiple commodities from commodities table Authorization required: admin.
+- **GET /studies/commodity/:id**: GET /studies/commodity/:id => { studyCommodity: { commodityId, studyId } }.  list all Windham studies associated with a commodity Authorization required: admin.
+- **GET /studies/study/:id**: GET /studies/study/:id => { studyCommodity: { commodityId, studyId } }. list all Windham commodities associated with a study Authorization required: admin.
+- **DELETE /studies/study/:id**: Delete all entries with studyId from windham_studies_commodities Authorization required: admin.
+
 
 ### Middleware
 - Uses *morgan*, HTTP request logger middleware for node.js
@@ -110,21 +120,44 @@ Throws NotFoundError if commodity not found.
 - **delete**: removes ethylene data by id. Returns "deleted" message
 
 #### Respiration
+- **create**: Create shelf life information (from data), update db, return new shelf life data. Data should be {commodityId, temperature, shelfLife, description, packaging}. Returns {id, commodityId, temperature, shelfLife, description, packaging}. Temperature is in celsius
+- **getById**  Given an id, return shelf life data. Returns {id, commodityId, temperature, shelfLife, description, packaging} Throws NotFoundError if id not found.
+- **getByCommodity**:  Given a commodity id, return all shelf life data about commodity.  Returns [...{ id, commodityId, temperature, shelfLife, description, packaging }] Throws NotFoundError if commodity not found.
+- **update**: Given an id, return new shelf life data. Data should be {commodityId, temperature, rrRate, rrClass} Returns {id, commodityId, temperature, rrRate, rrClass}	Respiration rate is in units mm * kg * hrData should be { commodityId, temperature, shelfLife, description, packaging. Returns {id, commodityId, temperature, shelfLife, description, packaging} Temperature is in celsius**/
+- **delete**: removes respiration data by id. Returns "deleted" message
+
+#### Temperature
+- **create**: Create temperature recommendation information (from data), update db, return new temperature recommendation data. Data should be {commodityId, minTemp, optimumTemp, description, rh}. Returns {id, commodityId, minTemp, optimumTemp, description, rh}. Temperature is in celsius. RH is relative humidity (%)
+- **getById**  Given an id, return temperature recommendation data. Returns {id, commodityId, minTemp, optimumTemp, description, rh} Throws NotFoundError if id not found.
+- **getByCommodity**:  Given a commodity id, return all temperature about commodity. Returns [...{ id, commodityId, minTemp, optimumTemp, rh }]. Throws NotFoundError if commodity not found.
+- **update**: Given an id, return new temperature data. Data should be {  minTemp, optimumTemp, rh}. Returns {id, commodityId, minTemp, optimumTemp, rh}. Temperature is in celsius
+- **delete**: removes temperature data by id. Returns "deleted" message
+
+#### ShelfLife
 - **create**: Create respiration rate information (from data), update db, return new respiration rate data. Data should be {commodityId, temperature, rrRate, rrClass}. Returns {id, commodityId, temperature, rrRate, rrClass}. Respiration rate is in units mm x kg x hr. Temperature is in celsius
 - **getById**  Given an id, return respiration rate data. Returns {id, commodityId, temperature, rrRate, rrClass} Throws NotFoundError if commodity not found.
 - **getByCommodity**: Given a commodity id, return all respiration rate data about commodity. Returns [...{ id, commodityId, temperature, rrRate, rrClass }] Throws NotFoundError if commodity not found.
 - **update**: Given an id, return new respiration rate data. Data should be {commodityId, temperature, rrRate, rrClass} Returns {id, commodityId, temperature, rrRate, rrClass}	Respiration rate is in units mm * kg * hr Temperature is in celsius**/
 - **delete**: removes respiration data by id. Returns "deleted" message
 
+#### WindhamStudies
+- **create**: Create windham study (from data), update db, return new windham study data. Data should be { title, date, source, objective}.  Returns {id, title, date, source, objective}
+- **getAll**: Get data for all studies. Returns [...{ id, title, date, objective, commodities }] where commodities=[...{commodityName, variety}] Throws NotFoundError if study not found.
+- **getById**: Given an id, return study data. Returns { id, title, date, objective }. Throws NotFoundError if study not found.
+- **update**: Given an id, update windham study (from data), update db, return new windham study data. Data should be { title, date, source, objective}. Returns {id, title, date, source, objective}
+- **delete**: removes respiration data by id. Returns "deleted" message
+
+#### WindhamStudiesCommodities
+- **create**: Create windham study relationship with commodity(from data), update db, return new windham study data. Data should be { commodityId, studyId}. Returns {commodityId, studyId}
+- **getByStudyId**: Given a study id, return all commodities associated with that study.  Returns { studyId:[...commodities] } Throws NotFoundError if study not found.
+- **getByCommodityId**: Given a commodity id, return all studies associated with that study. Returns { commodityId:[...studyIds] }.  Throws NotFoundError if study not found.
+- **update**: Given an id, update windham study (from data), update db, return new windham study data. Data should be { title, date, source, objective}. Returns {id, title, date, source, objective} 
+- **delete**: Given an id, remove windham study data. Returns "deleted" message
+
 #### References
 - **create**: Create reference information (from data), update db, return new reference data. Data should be {commodityId, source}. Returns {commodityId, source}
-
 - **getByCommodity**: Given a commodity id, return all reference data about commodity. Returns [...{ commodityId, source }] Throws NotFoundError if commodity not found.
-
 - **remove**: Given a commodityId and a source, removes reference.
-
-
-
 
 
 ## API
