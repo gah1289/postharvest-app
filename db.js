@@ -12,7 +12,6 @@ if (process.env.NODE_ENV === 'production') {
 			rejectUnauthorized : false
 		}
 	});
-	console.log({ connectionString });
 }
 else {
 	db = new Client({
