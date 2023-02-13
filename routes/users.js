@@ -26,7 +26,7 @@ const router = express.Router();
  * Authorization required: none
  **/
 
-router.post('/', async function(req, res, next) {
+router.post('/', ensureAdmin, async function(req, res, next) {
 	try {
 		const validator = jsonschema.validate(req.body, userNewSchema);
 		if (!validator.valid) {
