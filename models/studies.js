@@ -147,7 +147,7 @@ class WindhamStudies {
 			return `Removed Windham Packaging study: ${id}`;
 		} catch (e) {
 			console.log({ e });
-			throw new NotFoundError(`Could not find id to delete: ${id}`);
+			throw new NotFoundError(e);
 		}
 	}
 }
