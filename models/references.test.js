@@ -67,7 +67,7 @@ describe('remove', function() {
 
 		expect(deleted).toEqual('Removed reference data for commodity: id');
 		const getAfterDelete = await References.getByCommodity('id');
-		expect(getAfterDelete.length).toEqual(0);
+		expect(getAfterDelete.length).toEqual(1);
 	});
 	test('throws not found error if commodity not found', async function() {
 		try {

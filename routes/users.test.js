@@ -25,16 +25,19 @@ afterAll(commonAfterAll);
 /************************************** POST /users */
 
 describe('POST /users', function() {
-	test('works: create non-admin', async function() {
-		const resp = await request(app).post('/users').send({
-			username  : 'u-new',
-			firstName : 'First-new',
-			lastName  : 'Last-newL',
-			password  : 'password-new',
-			jobTitle  : 'workin',
-			email     : 'new@email.com',
-			isAdmin   : false
-		});
+	test('works for admin: create admin', async function() {
+		const resp = await request(app)
+			.post('/users')
+			.send({
+				username  : 'u-new',
+				firstName : 'First-new',
+				lastName  : 'Last-newL',
+				password  : 'password-new',
+				jobTitle  : 'workin',
+				email     : 'new@email.com',
+				isAdmin   : true
+			})
+			.set('authorization', `Bearer ${adminToken}`);
 
 		expect(resp.statusCode).toEqual(201);
 		expect(resp.body).toEqual({
@@ -44,29 +47,64 @@ describe('POST /users', function() {
 				lastName  : 'Last-newL',
 				jobTitle  : 'workin',
 				email     : 'new@email.com',
-				isAdmin   : false
+				isAdmin   : true
 			},
 			token : expect.any(String)
 		});
 	});
 
-	test('bad request if missing data', async function() {
-		const resp = await request(app).post('/users').send({
-			username : 'u-new'
-		});
+	test('does not work for non-admin: create admin', async function() {
+		const resp = await request(app)
+			.post('/users')
+			.send({
+				username  : 'u-new',
+				firstName : 'First-new',
+				lastName  : 'Last-newL',
+				password  : 'password-new',
+				jobTitle  : 'workin',
+				email     : 'new@email.com',
+				isAdmin   : true
+			})
+			.set('authorization', `Bearer ${u1Token}`);
 
-		expect(resp.statusCode).toEqual(400);
+		expect(resp.statusCode).toEqual(401);
 	});
-
-	test('bad request if invalid data', async function() {
+	test('does not work for anon: create admin', async function() {
 		const resp = await request(app).post('/users').send({
 			username  : 'u-new',
 			firstName : 'First-new',
 			lastName  : 'Last-newL',
 			password  : 'password-new',
-			email     : 'not-an-email',
+			jobTitle  : 'workin',
+			email     : 'new@email.com',
 			isAdmin   : true
 		});
+
+		expect(resp.statusCode).toEqual(401);
+	});
+	test('bad request if missing data', async function() {
+		const resp = await request(app)
+			.post('/users')
+			.send({
+				username : 'u-new'
+			})
+			.set('authorization', `Bearer ${adminToken}`);
+
+		expect(resp.statusCode).toEqual(400);
+	});
+
+	test('bad request if invalid data', async function() {
+		const resp = await request(app)
+			.post('/users')
+			.send({
+				username  : 'u-new',
+				firstName : 'First-new',
+				lastName  : 'Last-newL',
+				password  : 'password-new',
+				email     : 'not-an-email',
+				isAdmin   : true
+			})
+			.set('authorization', `Bearer ${adminToken}`);
 
 		expect(resp.statusCode).toEqual(400);
 	});

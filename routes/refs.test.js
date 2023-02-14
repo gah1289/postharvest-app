@@ -113,7 +113,7 @@ describe('DELETE /ref/:id', function() {
 	test('works for admin', async function() {
 		const resp = await request(app)
 			.delete(`/ref/id`)
-			.send({ source: 'some website' })
+			.send({ source: 'website' })
 			.set('authorization', `Bearer ${adminToken}`);
 		expect(typeof resp.body.deleted).toBe('string');
 	});
