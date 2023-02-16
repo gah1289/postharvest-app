@@ -151,7 +151,6 @@ Throws NotFoundError if commodity not found.
 - **create**: Create windham study relationship with commodity(from data), update db, return new windham study data. Data should be { commodityId, studyId}. Returns {commodityId, studyId}
 - **getByStudyId**: Given a study id, return all commodities associated with that study.  Returns { studyId:[...commodities] } Throws NotFoundError if study not found.
 - **getByCommodityId**: Given a commodity id, return all studies associated with that study. Returns { commodityId:[...studyIds] }.  Throws NotFoundError if study not found.
-- **update**: Given an id, update windham study (from data), update db, return new windham study data. Data should be { title, date, source, objective}. Returns {id, title, date, source, objective} 
 - **delete**: Given an id, remove windham study data. Returns "deleted" message
 
 #### References

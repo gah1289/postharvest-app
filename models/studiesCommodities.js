@@ -82,29 +82,6 @@ class WindhamStudiesCommodities {
 		}
 	}
 
-	// Given an id, update windham study (from data), update db, return new windham study data.
-	// Data should be { title, date, source, objective}
-	// Returns {id, title, date, source, objective}
-
-	static async update(id, data) {
-		const { setCols, values } = sqlForPartialUpdate(data, {});
-
-		const querySql = `UPDATE windham_studies
-	                  SET ${setCols}
-	                  WHERE id = '${id}'
-                      RETURNING id, title, date, source, objective`;
-
-		try {
-			const result = await db.query(querySql, [
-				...values
-			]);
-
-			return result.rows[0];
-		} catch (e) {
-			throw new NotFoundError(`No id found: ${id}`);
-		}
-	}
-
 	// Given an id, remove windham study data.
 	// Returns "deleted" message
 
