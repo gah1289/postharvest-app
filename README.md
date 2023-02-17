@@ -54,7 +54,6 @@ ethylene: [{id: int,commodityId: str,temperature: str,c2h4Production: str,c2h4Cl
 #### /temperature
 - **POST /temperature**: POST / { temperature }  => { temperature }. Adds a new temperature recommendation object. This returns the newly created temperature recommendation data {temperature: {id, commodityId, minTemp, optimumTemp, description, rh} }. Authorization required: admin
 - **GET /temperature/:id**: GET /[temperatureId] => {temperature}. Pass in a temperature id in req.params. Returns  {temperature: {id, commodityId, minTemp, optimumTemp, description, rh}. Authorization required: none. 
-- **POST /temperature**: POST / { temperature }  => { temperature }. Adds a new temperature recommendation object. This returns the newly created temperature recommendation data {temperature: {id, commodityId, minTemp, optimumTemp, description, rh} }. Authorization required: admin
 - **GET /temperature/commodity/:id**: GET /[commodityId] => [...{ temperature }]. Returns{temperature: [{id, commodityId,minTemp, optimumTemp, description, rh}]}Authorization required: none. 
 - **PATCH /temperature/:id**:PATCH /[id] { temperature } => { temperature }. Data can include: { minTemp, optimumTemp, description, rh } Returns  {temperature: {id, commodityId, minTemp, optimumTemp, description, rh}} Authorization required: admin
 - **DELETE /temperature/:id**: DELETE /[id]  =>  { deleted: id } Authorization required: admin 
